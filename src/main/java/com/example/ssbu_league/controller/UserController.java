@@ -16,7 +16,7 @@ public class UserController {
 
     @Autowired
     private AppUserRepository appUserRepository;
-    private AppUserService appUserService;
+    private final AppUserService appUserService;
 
     @Autowired
     public UserController(AppUserService appUserService) {
@@ -32,7 +32,32 @@ public class UserController {
 
 
     @PostMapping("/register")
-    public String register(@RequestParam String username, @RequestParam String password) {
+    public String register(@RequestParam String username,
+                           @RequestParam String password,
+                           @RequestParam String passwordConfirm,
+                           Model model) {
+        // Assert username is not null and unique
+        if (appUserRepository.existsByUsername(username)) {
+            model.addAttribute("error", "Username already exists! Please choose another one.");
+            AppUser newUser = new AppUser();
+            model.addAttribute("user", newUser);
+            return "register";
+        }
+        // Assert password is at least 6 chars long
+        else if (password.length() < 6) {
+            model.addAttribute("error", "Password must be at least 6 characters!");
+            AppUser newUser = new AppUser();
+            model.addAttribute("user", newUser);
+            return "register";
+        }
+        // Assert both passwords are equal
+         else if (!password.equals(passwordConfirm)) {
+            model.addAttribute("error", "Passwords do not match!");
+            AppUser newUser = new AppUser();
+            model.addAttribute("user", newUser);
+            return "register";
+        }
+        // All tests passed, save user to database
         appUserService.createUser(username, password);
         return "redirect:/";
     }
