@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Profile</title>
+</head>
+<body>
+<h2>Your Profile</h2>
+
+<!-- Display user information -->
+<div>
+    <p><strong>Username:</strong> <span th:text="${user.username}"></span></p>
+    <p><strong>Gamer Tag:</strong> <span th:text="${user.gamerTag}"></span></p>
+    <p><strong>Created At:</strong> <span th:text="${user.createdAt}"></span></p>
+</div>
+
+<!-- Link to edit profile -->
+<div>
+    <a th:href="@{/profile/edit}">Edit Profile</a>
+</div>
+
+<!-- Button to logout -->
+<div>
+    <form action="/logout" method="POST">
+        <button type="submit">Logout</button>
+    </form>
+</div>
+
+</body>
+</html>

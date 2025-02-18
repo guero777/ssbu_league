@@ -1,7 +1,8 @@
 package com.example.ssbu_league.models;
 
-import com.example.ssbu_league.configurations.SecurityConfig;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
@@ -16,23 +17,32 @@ public class AppUser {
         USER, ADMIN
     }
 
+    @Getter
     @Id
     @GeneratedValue
     private int id;
 
+    @Getter
+    @Setter
     @Column(unique = true, nullable = false)
     private String username;
 
+    @Getter
+    @Setter
     @Column(nullable = false)
     private String password;
 
+    @Getter
+    @Setter
     private String gamerTag;
     private LocalDateTime createdAt;
 
+    @Getter
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    public AppUser() {}
+    public AppUser() {
+    }
 
     public AppUser(String username, String password) {
         this.username = username;
@@ -55,47 +65,12 @@ public class AppUser {
         return List.of(new SimpleGrantedAuthority("ROLE_" + role.name()));
     }
 
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getGamerTag() {
-        return gamerTag;
-    }
-
-    public void setGamerTag(String gamerTag) {
-        this.gamerTag = gamerTag;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
+    public void switchRole() {
+        if (role == Role.ADMIN) {
+            role = Role.USER;
+        }
+        else {
+            role = Role.ADMIN;
+        }
     }
 }

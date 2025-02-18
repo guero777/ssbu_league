@@ -1,6 +1,7 @@
 package com.example.ssbu_league.controller;
 
 
+import com.example.ssbu_league.configurations.AppUserPrincipal;
 import com.example.ssbu_league.models.AppUser;
 import com.example.ssbu_league.repositories.AppUserRepository;
 import com.example.ssbu_league.services.AppUserService;
@@ -16,19 +17,20 @@ public class UserController {
 
     @Autowired
     private AppUserRepository appUserRepository;
-    private final AppUserService appUserService;
+    private AppUserService appUserService;
 
-    @Autowired
-    public UserController(AppUserService appUserService) {
-        this.appUserService = appUserService;
+    @PostMapping("/login")
+    public String login(@RequestParam String username,
+                        @RequestParam String password,
+                        Model model) {
+        return "redirect:/profile";
     }
 
     @GetMapping("/register")
     public String register(Model model) {
         AppUser newUser = new AppUser();
         model.addAttribute("user", newUser);
-        return "register";
-    }
+        return "register";    }
 
 
     @PostMapping("/register")
@@ -62,7 +64,18 @@ public class UserController {
         return "redirect:/";
     }
 
-    @GetMapping("/users")
+
+    @GetMapping("/profile")
+    public String profile(Model model, AppUserPrincipal principal) {
+        if (principal != null) {
+            String username = principal.getUsername();
+            AppUser currentUser = appUserRepository.findByUsername(username);
+            model.addAttribute("user", currentUser);
+        }
+        return "profile";
+    }
+
+    @GetMapping("/user/users")
     public String users(Model model) {
         model.addAttribute("users", appUserRepository.findAll());
         return "users";

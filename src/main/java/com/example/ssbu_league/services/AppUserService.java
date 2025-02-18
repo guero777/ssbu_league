@@ -30,6 +30,20 @@ public class AppUserService implements UserDetailsService {
         appUserRepository.save(newUser);
     }
 
+    public boolean changeUserRole(String username) {
+        // Retrieve the user by their username
+        AppUser user = appUserRepository.findByUsername(username);
+
+        if (user != null) {
+            // Change the user's role to ADMIN
+            user.switchRole();
+            // Save the updated user back into the database
+            appUserRepository.save(user);
+            return true; // Successfully changed the role
+        }
+        return false; // User not found
+    }
+
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
