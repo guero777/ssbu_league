@@ -2,10 +2,30 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Admin Page</title>
+    <title>Admin - App Users</title>
 </head>
 <body>
-<h1>Admin Page</h1>
-<p>Welcome to the Admin page. Only authorized users can access this page.</p>
+<h1>List of App Users</h1>
+
+<table border="1">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Username</th>
+        <th>GamerTag</th>
+        <th>Created At</th>
+        <th>Role</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="user : ${users}">
+        <td th:text="${user.id}"></td>
+        <td th:text="${user.username}"></td>
+        <td th:text="${user.gamerTag}"></td>
+        <td th:text="${user.createdAt)}"></td>
+        <td th:text="${user.role}"></td>
+    </tr>
+    </tbody>
+</table>
 </body>
 </html>

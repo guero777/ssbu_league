@@ -13,7 +13,7 @@ import java.util.List;
 @Entity
 public class AppUser {
 
-    enum Role {
+    public enum Role {
         USER, ADMIN
     }
 

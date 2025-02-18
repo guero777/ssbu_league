@@ -4,9 +4,13 @@ import com.example.ssbu_league.models.AppUser;
 import com.example.ssbu_league.repositories.AppUserRepository;
 import com.example.ssbu_league.services.AppUserService;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.List;
 
 @Controller
 public class AdminController {
@@ -20,8 +24,22 @@ public class AdminController {
     }
 
     @GetMapping("/admin")
-    public String admin() {
+    public String getAllUsers(Model model) {
+        List<AppUser> users = appUserRepository.findAll();
+
+        // Log users to ensure data is being passed correctly
+        System.out.println("Users: " + users);
+
+        model.addAttribute("users", users);
         return "admin";
+    }
+
+
+    // Change the user's role when the checkbox is toggled
+    @PostMapping("/admin/changeRole")
+    public String changeUserRole(String username) {
+        appUserService.changeUserRole(username); // Toggle the role
+        return "redirect:/admin"; // Redirect back to the admin page after change
     }
 
 

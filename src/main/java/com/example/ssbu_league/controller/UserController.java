@@ -17,6 +17,7 @@ public class UserController {
 
     @Autowired
     private AppUserRepository appUserRepository;
+    @Autowired
     private AppUserService appUserService;
 
     @PostMapping("/login")
@@ -38,29 +39,17 @@ public class UserController {
                            @RequestParam String password,
                            @RequestParam String passwordConfirm,
                            Model model) {
-        // Assert username is not null and unique
-        if (appUserRepository.existsByUsername(username)) {
-            model.addAttribute("error", "Username already exists! Please choose another one.");
-            AppUser newUser = new AppUser();
-            model.addAttribute("user", newUser);
+        // Delegate validation and user creation to the service
+        String validationError = appUserService.validateAndCreateUser(username, password, passwordConfirm);
+
+        if (validationError != null) {
+            // If validation fails, return error message and show the form again
+            model.addAttribute("error", validationError);
+            model.addAttribute("user", new AppUser()); // Add empty user to the form
             return "register";
         }
-        // Assert password is at least 6 chars long
-        else if (password.length() < 6) {
-            model.addAttribute("error", "Password must be at least 6 characters!");
-            AppUser newUser = new AppUser();
-            model.addAttribute("user", newUser);
-            return "register";
-        }
-        // Assert both passwords are equal
-         else if (!password.equals(passwordConfirm)) {
-            model.addAttribute("error", "Passwords do not match!");
-            AppUser newUser = new AppUser();
-            model.addAttribute("user", newUser);
-            return "register";
-        }
-        // All tests passed, save user to database
-        appUserService.createUser(username, password);
+
+        // If user creation is successful, redirect to home page
         return "redirect:/";
     }
 
@@ -77,7 +66,7 @@ public class UserController {
 
     @GetMapping("/user/users")
     public String users(Model model) {
-        model.addAttribute("users", appUserRepository.findAll());
+        model.addAttribute("users", appUserService.getAllUsers());
         return "users";
     }
 

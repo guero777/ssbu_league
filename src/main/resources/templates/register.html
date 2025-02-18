@@ -12,6 +12,7 @@
     <div th:if="${error}" style="color: red;">
         <p th:text="${error}"></p>
     </div>
+
     <div>
         <label for="username">Username:</label>
         <input type="text" id="username" th:field="*{username}" placeholder="Enter your username" required />
@@ -30,8 +31,9 @@
     <div>
         <button type="submit">Register</button>
     </div>
+
     <!-- Button to navigate to Homepage -->
-    <button onclick="window.location.href='/'">Back to home</button>
+    <button type="button" onclick="window.location.href='/'">Back to home</button>
 
 </form>
 </body>
