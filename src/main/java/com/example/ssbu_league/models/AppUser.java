@@ -13,14 +13,14 @@ import java.util.List;
 @Entity
 public class AppUser {
 
-    public enum Role {
-        USER, ADMIN
-    }
-
     @Getter
     @Id
     @GeneratedValue
     private int id;
+
+    public enum Role {
+        USER, ADMIN
+    }
 
     @Getter
     @Setter
