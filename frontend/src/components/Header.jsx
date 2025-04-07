@@ -1,14 +1,15 @@
 // src/components/Header.jsx
 import React from 'react';
-import './header.css'; // Import the CSS for styling
+import { Link } from 'react-router-dom';
+import './header.css';
 
 const Header = () => {
     return (
         <div className="head-container">
-            <h1 className="header">SSBU League </h1>
+            <h1 className="header">SSBU League</h1>
             <div className="button-container">
-                <button className="btn">Register</button>
-                <button className="btn">Login</button>
+                <Link to="/register" className="button">Register</Link>
+                <Link to="/login" className="button">Login</Link>
             </div>
         </div>
     );
