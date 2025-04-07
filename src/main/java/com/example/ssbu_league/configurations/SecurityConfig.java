@@ -1,7 +1,9 @@
 package com.example.ssbu_league.configurations;
 
+import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
@@ -31,7 +33,6 @@ public class SecurityConfig {
                 .permitAll();
         return http.build();
     }
-
 
     @Bean
     public PasswordEncoder passwordEncoder() {

@@ -8,6 +8,6 @@ public class RunController {
 
     @GetMapping("/")
     public String index() {
-        return "home";
+        return "forward:/index.html";
     }
 }
