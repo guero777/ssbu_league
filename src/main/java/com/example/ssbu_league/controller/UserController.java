@@ -20,21 +20,21 @@ public class UserController {
     @Autowired
     private AppUserService appUserService;
 
-    @PostMapping("/login")
+    /*@PostMapping("/login")
     public String login(@RequestParam String username,
                         @RequestParam String password,
                         Model model) {
         return "redirect:/profile";
-    }
+    }*/
 
-    @GetMapping("/register")
+    /*@GetMapping("/register")
     public String register(Model model) {
         AppUser newUser = new AppUser();
         model.addAttribute("user", newUser);
         return "register";    }
+    */
 
-
-    @PostMapping("/register")
+    /*@PostMapping("/register")
     public String register(@RequestParam String username,
                            @RequestParam String password,
                            @RequestParam String passwordConfirm,
@@ -51,10 +51,10 @@ public class UserController {
 
         // If user creation is successful, redirect to home page
         return "redirect:/";
-    }
+    }*/
 
 
-    @GetMapping("/profile")
+    /*@GetMapping("/profile")
     public String profile(Model model, AppUserPrincipal principal) {
         if (principal != null) {
             String username = principal.getUsername();
@@ -62,12 +62,12 @@ public class UserController {
             model.addAttribute("user", currentUser);
         }
         return "profile";
-    }
+    }*/
 
-    @GetMapping("/user/users")
+    /*@GetMapping("/user/users")
     public String users(Model model) {
         model.addAttribute("users", appUserService.getAllUsers());
         return "users";
-    }
+    }*/
 
 }
