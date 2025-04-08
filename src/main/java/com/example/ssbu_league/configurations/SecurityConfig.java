@@ -1,17 +1,16 @@
 package com.example.ssbu_league.configurations;
 
-import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.web.cors.CorsConfiguration;
+
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -19,8 +18,11 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf(csrf -> csrf.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()) // React can access CSRF token from cookies
-                ).authorizeHttpRequests(auth -> auth
+        http
+                .csrf(csrf -> csrf
+                        .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()) // ⬅️ CRUCIAL
+                )
+                .authorizeHttpRequests(auth -> auth
                         .requestMatchers( "/index.html")
                         .permitAll()
                         .requestMatchers("/login", "/register", "/logout", "/error")
@@ -30,17 +32,30 @@ public class SecurityConfig {
                         .anyRequest()
                         .permitAll()) // allow all other frontend routes
 
-                .formLogin(form -> form.loginProcessingUrl("/login") // where React posts to
+                .formLogin(form -> form
+                        .loginProcessingUrl("/login") // where React posts to
                         .usernameParameter("username")
                         .passwordParameter("password").defaultSuccessUrl("/", true) // or your custom dashboard
                         .permitAll()
-                        .loginPage("/login"))
+                        .loginPage("/login")
+                        //.defaultSuccessUrl("/index", true) USING THIS BREAKS REACTS ROUTING
+                        )
+
                 .logout(logout -> logout
                         .logoutUrl("/logout")
                         .logoutSuccessUrl("/")
                         .deleteCookies("JSESSIONID")
                         .permitAll())
-                .cors(Customizer.withDefaults());
+                .cors(cors -> cors
+                        .configurationSource(request -> {
+                            CorsConfiguration config = new CorsConfiguration();
+                            config.setAllowedOrigins(List.of("http://localhost:3000", "http://localhost:5173"));
+                            config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+                            config.setAllowedHeaders(List.of("Content-Type", "X-XSRF-TOKEN", "X-Requested-With"));
+                            config.setAllowCredentials(true);
+                            return config;
+                        })
+                );
 
         return http.build();
     }
