@@ -1,13 +1,13 @@
 // src/components/Dashboard.jsx
 import React from 'react';
-import Table from './Table';
+import Scoreboard from './Scoreboard.jsx';
 
 const Dashboard = () => {
     return (
         <>
             <div className="dashboard-container">
-                <h2 className="dashboard-title">Leaderboard</h2>
-                <Table />
+                <h2 className="dashboard-title">Dashboard</h2>
+                <Scoreboard />
             </div>
         </>
     );

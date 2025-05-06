@@ -47,7 +47,7 @@ public class AppUserService implements UserDetailsService {
     }
 
     // Create user with AppUser(username, encodedPassword) constructor
-    public void createUser(String username, String password) {
+    private void createUser(String username, String password) {
         String encodedPassword = passwordEncoder.encode(password);
         AppUser newUser = new AppUser(username, encodedPassword);
         appUserRepository.save(newUser);

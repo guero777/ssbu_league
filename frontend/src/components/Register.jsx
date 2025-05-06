@@ -1,4 +1,6 @@
 import {useState} from "react";
+import axios from "axios";
+import {useNavigate} from "react-router-dom";
 
 
 const Register = () => {
@@ -6,13 +8,19 @@ const Register = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [repeatPassword, setRepeatPassword] = useState("");
+    const [error, setError] = useState("");
+    const navigate = useNavigate();
+
 
     const handleSubmit = (e) => {
 
         e.preventDefault();
-        // TRANSMIT DATA TO BACKEND HERE
-        console.log(username);
-        console.log(password);
+        setError("");
+
+        // Client-Side validation
+        if (password.length < MINIMUM_PASSWORD_LENGTH) {
+            setError("Password must be at least " + MINIMUM_PASSWORD_LENGTH + " characters long");
+        }
     }
 
     return (
@@ -45,7 +53,7 @@ const Register = () => {
                             type="password"
                             id={"repeat-password"}
                             value={repeatPassword}
-                            onChange={(e) => setPassword(e.target.value)}
+                            onChange={(e) => setRepeatPassword(e.target.value)}
                             placeholder="Repeat password"
                             required
                         />

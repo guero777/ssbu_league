@@ -1,18 +1,19 @@
 package com.example.ssbu_league.controller;
 
 
-import com.example.ssbu_league.configurations.AppUserPrincipal;
-import com.example.ssbu_league.models.AppUser;
+import com.example.ssbu_league.dto.RegistrationRequest;
+import com.example.ssbu_league.dto.UserScoreDTO;
 import com.example.ssbu_league.repositories.AppUserRepository;
 import com.example.ssbu_league.services.AppUserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
-@Controller
+import java.util.List;
+import java.util.stream.Collectors;
+
+@RestController
+@RequestMapping("/api")
 public class UserController {
 
     @Autowired
@@ -20,19 +21,19 @@ public class UserController {
     @Autowired
     private AppUserService appUserService;
 
-    /*@PostMapping("/login")
-    public String login(@RequestParam String username,
-                        @RequestParam String password,
-                        Model model) {
-        return "redirect:/profile";
-    }*/
+    @GetMapping("/userRankings")
+    public List<UserScoreDTO> getAllUsers() {
+        return appUserService.getAllUsers().stream()
+                .map(user -> new UserScoreDTO(
+                        user.getGamerTag()
+                ))
+                .collect(Collectors.toList());
+    }
 
-    /*@GetMapping("/register")
-    public String register(Model model) {
-        AppUser newUser = new AppUser();
-        model.addAttribute("user", newUser);
-        return "register";    }
-    */
+@GetMapping("/register")
+    public ResponseEntity<?> register(@RequestBody RegistrationRequest request) {
+        return null;
+    }
 
     /*@PostMapping("/register")
     public String register(@RequestParam String username,

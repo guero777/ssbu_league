@@ -21,31 +21,35 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf
                         .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()) // ⬅️ CRUCIAL
+                        .ignoringRequestMatchers("/login") // Add this line to ignore CSRF for login
                 )
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers( "/index.html")
+                        .requestMatchers( "/index")
                         .permitAll()
                         .requestMatchers("/login", "/register", "/logout", "/error")
                         .permitAll()
                         .requestMatchers("/api/**")
                         .authenticated() // secure only API calls
                         .anyRequest()
-                        .permitAll()) // allow all other frontend routes
+                        .permitAll() // allow all other frontend routes
+                )
 
                 .formLogin(form -> form
                         .loginProcessingUrl("/login") // where React posts to
                         .usernameParameter("username")
-                        .passwordParameter("password").defaultSuccessUrl("/", true) // or your custom dashboard
+                        .passwordParameter("password")
+                        //.defaultSuccessUrl("/index", true)
                         .permitAll()
                         .loginPage("/login")
-                        //.defaultSuccessUrl("/index", true) USING THIS BREAKS REACTS ROUTING
                         )
 
                 .logout(logout -> logout
                         .logoutUrl("/logout")
-                        .logoutSuccessUrl("/")
+                        .logoutSuccessUrl("/index")
                         .deleteCookies("JSESSIONID")
-                        .permitAll())
+                        .permitAll()
+                )
+
                 .cors(cors -> cors
                         .configurationSource(request -> {
                             CorsConfiguration config = new CorsConfiguration();

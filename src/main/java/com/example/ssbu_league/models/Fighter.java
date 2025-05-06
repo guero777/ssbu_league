@@ -1,4 +1,4 @@
-package com.example.ssbu_league.models;
+/*package com.example.ssbu_league.models;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -16,4 +16,4 @@ public class Fighter {
     @Setter
     private String name;
 
-}
+}*/
