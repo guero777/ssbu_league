@@ -24,6 +24,11 @@ public class UserController {
     @Autowired
     private AppUserService appUserService;
 
+    @GetMapping("get-user-table")
+    public List<AppUser> getUserTable() {
+        return appUserService.getAllUsers();
+    }
+
     /*  returns a list of all UserScoreDTO
     *   look for UserScoreDTO    */
     @GetMapping("/userRankings")

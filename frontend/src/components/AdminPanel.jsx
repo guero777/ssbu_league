@@ -1,10 +1,12 @@
 // src/components/AdminPanel.jsx
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { useNavigate } from 'react-router-dom';
 import './AdminPanel.css';
+import UserTable from "./UserTable.jsx";
 
 const AdminPanel = () => {
     const navigate = useNavigate();
+
 
     return (
         <div className="admin-panel-container">
@@ -13,12 +15,9 @@ const AdminPanel = () => {
                     Back
                 </button>
                 <h1>Admin Panel</h1>
-                <p>Welcome to the admin panel!</p>
-                <p>Here you can manage users and system settings.</p>
-
             </div>
-            TODO add user table that lets me edit any user from the table
-        </div>
+            <UserTable />
+            </div>
     );
 };
 
