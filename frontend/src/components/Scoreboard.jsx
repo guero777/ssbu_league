@@ -12,7 +12,9 @@ const Scoreboard = () => {
       const response = await axios.get('http://localhost:8080/api/userRankings', {
         withCredentials: true
       });
-      setRankings(response.data);
+      // Sort the rankings by score in descending order
+      const sortedRankings = response.data.sort((a, b) => b.score - a.score);
+      setRankings(sortedRankings);
       setLoading(false);
     } catch (err) {
       setError(`Error loading rankings: ${err.message}`);
@@ -24,13 +26,8 @@ const Scoreboard = () => {
     fetchRankings();
   }, []);
 
-  if (loading) {
-    return <div className="loading">Loading rankings...</div>;
-  }
-
-  if (error) {
-    return <div className="error">{error}</div>;
-  }
+  if (loading) return <div className="loading">Loading rankings...</div>;
+  if (error) return <div className="error">{error}</div>;
 
   return (
     <div className="scoreboard">
@@ -40,19 +37,20 @@ const Scoreboard = () => {
           <tr>
             <th>Rank</th>
             <th>Gamer Tag</th>
-            <th>Mains</th>
+            <th>Score</th>
           </tr>
         </thead>
         <tbody>
           {rankings.map((player, index) => (
-            <tr key={player.id || index}>
+            <tr key={player.gamerTag || index}>
               <td>{index + 1}</td>
               <td>{player.gamerTag || 'N/A'}</td>
+              <td>{player.score}</td>
             </tr>
           ))}
         </tbody>
       </table>
-      {rankings.length === 0 && !loading && !error && (
+      {rankings.length === 0 && (
         <div className="no-data">No rankings available</div>
       )}
     </div>

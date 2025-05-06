@@ -35,7 +35,14 @@ public class AppUser {
     @Getter
     @Setter
     private String gamerTag;
+
+    @Getter
+    @Setter
     private LocalDateTime createdAt;
+
+    @Getter
+    @Setter
+    private int score;
 
     @Getter
     @Enumerated(EnumType.STRING)
