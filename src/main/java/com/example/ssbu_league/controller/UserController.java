@@ -4,10 +4,13 @@ package com.example.ssbu_league.controller;
 import com.example.ssbu_league.dto.RegistrationRequest;
 import com.example.ssbu_league.dto.UserScoreDTO;
 import com.example.ssbu_league.dto.UserToDTOMapper;
+import com.example.ssbu_league.models.AppUser;
 import com.example.ssbu_league.repositories.AppUserRepository;
 import com.example.ssbu_league.services.AppUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,10 +22,10 @@ import java.util.stream.Collectors;
 public class UserController {
 
     @Autowired
-    private AppUserRepository appUserRepository;
-    @Autowired
     private AppUserService appUserService;
 
+    /*  returns a list of all UserScoreDTO
+    *   look for UserScoreDTO    */
     @GetMapping("/userRankings")
     public List<UserScoreDTO> getAllUserScores() {
 
@@ -34,7 +37,17 @@ public class UserController {
                 .collect(Collectors.toList());
     }
 
-@GetMapping("/register")
+    /*  returns the role from the currently logged in user */
+    @GetMapping("/getRole")
+    public String getCurrentUserRole() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        return appUserService.getRole(username);
+    }
+
+
+    // TODO IMPLEMENT REGISTER ENDPOINT
+    @GetMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegistrationRequest request) {
         return null;
     }

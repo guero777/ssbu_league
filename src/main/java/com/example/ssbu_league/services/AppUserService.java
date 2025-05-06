@@ -58,6 +58,11 @@ public class AppUserService implements UserDetailsService {
         appUserRepository.deleteById(id);
     }
 
+    public String getRole(String username) {
+        AppUser user = appUserRepository.findByUsername(username);
+        return user.getRole().name();
+    }
+
     // Check if the user is an admin
     public boolean isAdmin(AppUser appUser) {
         return appUser.getRole() == AppUser.Role.ADMIN;

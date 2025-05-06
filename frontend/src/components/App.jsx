@@ -1,11 +1,12 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import './home.css';
+import './App.css';
 import Scoreboard from "./Scoreboard.jsx";
 
-const Home = () => {
+const App = () => {
   const navigate = useNavigate();
 
+  // TODO put Header html in component, only return header.jsx and scoreboard.jsx
   return (
     <div className="home-container">
       <nav className="nav-bar">
@@ -34,4 +35,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default App;

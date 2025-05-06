@@ -3,29 +3,31 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import '../index.css';
 import {BrowserRouter, Route, Routes} from "react-router-dom";
-import Home from "./components/Home.jsx";
+import App from "./components/App.jsx";
 import Scoreboard from "./components/Scoreboard.jsx";
 import Login from "./components/Login.jsx";
 import Register from "./components/Register.jsx";
 import Dashboard from "./components/Dashboard.jsx";
+import UserPanel from "./components/UserPanel.jsx";
+import AdminPanel from "./components/AdminPanel.jsx";
+import { AuthProvider } from './components/AuthContext';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
     <React.StrictMode>
         <BrowserRouter>
             <Routes>
-                <Route path="/" element={
-                    <>
-                        <Home />
-                    </>
-                } />
+                <Route path="/" element={<App />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
-                <Route path="/dashboard" element={<Dashboard />} />
-                {/*
-                MAYBE I WILL IMPLEMENT THEM???
-                <Route path={"/settings"} element={<Settings />} />
-                <Route path={"/admin"} element={<Admin />} />
-                */}
+                <Route path="/user-panel" element={<UserPanel/>} />
+                <Route path="/admin-panel" element={<AdminPanel />} />
+
+                <Route path="/dashboard" element={
+                    <AuthProvider>
+                        <Dashboard />
+                    </AuthProvider>
+                } />
+
             </Routes>
         </BrowserRouter>
     </React.StrictMode>

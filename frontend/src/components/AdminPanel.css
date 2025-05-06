@@ -1,0 +1,23 @@
+.admin-panel-container {
+    background-image: url('http://localhost:8080/assets/fewChars.jpg');
+    min-height: 100vh;
+    width: 100%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+.admin-panel-header {
+    padding: 2rem;
+    color: white; /* Makes text visible on dark backgrounds */
+}
+
+/* Reset any inherited styles */
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
