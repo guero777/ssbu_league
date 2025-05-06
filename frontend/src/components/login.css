@@ -1,4 +1,125 @@
-.login-container {}
-.login-header {}
-.user-field {}
-.password-field {}
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    background-color: #000000; /* Fallback color */
+}
+
+body {
+    background-image: url('http://localhost:8080/assets/smashLogoFire.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    font-family: 'Arial', sans-serif;
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-page {
+    min-height: 100vh;
+    width: 100%;
+    background-image: url('http://localhost:8080/assets/smashLogoFire.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+.login-container {
+    max-width: 400px;
+    width: 90%;
+    padding: 30px;
+    background: linear-gradient(145deg, #2c3539, #353d41);
+    border-radius: 10px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+}
+
+.login-header {
+    color: #e0e0e0;
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 24px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.username-field,
+.password-field {
+    margin-bottom: 20px;
+}
+
+.username-field input,
+.password-field input {
+    width: 100%;
+    padding: 12px 15px;
+    background: #1c2327;
+    border: 1px solid #404b50;
+    border-radius: 5px;
+    color: #ffffff;
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+.username-field input:focus,
+.password-field input:focus {
+    outline: none;
+    border-color: #5a6b71;
+    box-shadow: 0 0 0 2px rgba(90, 107, 113, 0.3);
+}
+
+.username-field input::placeholder,
+.password-field input::placeholder {
+    color: #6c757d;
+}
+
+.login-button {
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(to right, #2c3539, #3f474b);
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.login-button:hover {
+    background: linear-gradient(to right, #3f474b, #4a5358);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.login-button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* For error messages */
+.error-message {
+    color: #ff6b6b;
+    text-align: center;
+    margin-top: 15px;
+    font-size: 14px;
+}

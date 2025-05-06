@@ -31,7 +31,6 @@ const Scoreboard = () => {
 
   return (
     <div className="scoreboard">
-      <h2>Player Rankings</h2>
       <table>
         <thead>
           <tr>

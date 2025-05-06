@@ -1,6 +1,7 @@
 import {useState} from "react";
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
+import './login.css';
 
 
 const Login = () => {
@@ -34,38 +35,38 @@ const Login = () => {
         }
     };
 
-    return (
-        <>
-            <div className="login-container">
-                <h2 className={"login-header"}> Log into your account </h2>
-                <form onSubmit={handleLogin}>
-                    <div className={"username-field"}>
-                        <input
-                            type="text"
-                            id={"username"}
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
-                            placeholder="Enter your username"
-                            required
-                        />
-                    </div>
-                    <div className={"password-field"}>
-                        <input
-                            type="password"
-                            id={"password"}
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            placeholder="Enter your password"
-                            required
-                        />
-                    </div>
-                    <button type={"submit"} className={"login-button"}>
-                        Sign in
-                    </button>
-                </form>
-            </div>
-        </>
-    );
+return (
+    <>
+        <div className="login-container">
+            <h2 className={"login-header"}> Log into your account </h2>
+            <form onSubmit={handleLogin}>
+                <div className={"username-field"}>
+                    <input
+                        type="text"
+                        id={"username"}
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                        placeholder="Enter your username"
+                        required
+                    />
+                </div>
+                <div className={"password-field"}>
+                    <input
+                        type="password"
+                        id={"password"}
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        placeholder="Enter your password"
+                        required
+                    />
+                </div>
+                <button type={"submit"} className={"login-button"}>
+                    Sign in
+                </button>
+            </form>
+        </div>
+    </>
+);
 
 };
 
