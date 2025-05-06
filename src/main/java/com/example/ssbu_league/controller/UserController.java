@@ -3,6 +3,7 @@ package com.example.ssbu_league.controller;
 
 import com.example.ssbu_league.dto.RegistrationRequest;
 import com.example.ssbu_league.dto.UserScoreDTO;
+import com.example.ssbu_league.dto.UserToDTOMapper;
 import com.example.ssbu_league.repositories.AppUserRepository;
 import com.example.ssbu_league.services.AppUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api")
+@CrossOrigin(origins = "http://localhost:5173") // Vite's default port
 public class UserController {
 
     @Autowired
@@ -22,11 +24,13 @@ public class UserController {
     private AppUserService appUserService;
 
     @GetMapping("/userRankings")
-    public List<UserScoreDTO> getAllUsers() {
-        return appUserService.getAllUsers().stream()
-                .map(user -> new UserScoreDTO(
-                        user.getGamerTag()
-                ))
+    public List<UserScoreDTO> getAllUserScores() {
+
+        UserToDTOMapper mapper = new UserToDTOMapper();
+
+        return appUserService.getAllUsers()
+                .stream()
+                .map(mapper::toDTO)
                 .collect(Collectors.toList());
     }
 
@@ -67,7 +71,7 @@ public class UserController {
 
     /*@GetMapping("/user/users")
     public String users(Model model) {
-        model.addAttribute("users", appUserService.getAllUsers());
+        model.addAttribute("users", appUserService.getAllUserScores());
         return "users";
     }*/
 

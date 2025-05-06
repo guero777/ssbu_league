@@ -1,12 +1,6 @@
 package com.example.ssbu_league.dto;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Value;
 
-@Data
-@AllArgsConstructor
-public class UserScoreDTO {
-
-    private String gamerTag;
-    // TODO: Add fields relevant for the leaderboard view
-}
+public record UserScoreDTO(String gamerTag) { }

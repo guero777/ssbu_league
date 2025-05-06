@@ -6,7 +6,9 @@ const Dashboard = () => {
     return (
         <>
             <div className="dashboard-container">
-                <h2 className="dashboard-title">Dashboard</h2>
+                <h1 className="dashboard-title">Dashboard</h1>
+            </div>
+            <div>
                 <Scoreboard />
             </div>
         </>

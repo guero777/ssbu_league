@@ -27,8 +27,7 @@ const Home = () => {
       </nav>
       <main className="main-content">
         <div className="table-container">
-          <h2>Rankings</h2>
-          <Scoreboard/>
+          <Scoreboard />
         </div>
       </main>
     </div>

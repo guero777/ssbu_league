@@ -24,14 +24,16 @@ public class SecurityConfig {
                         .ignoringRequestMatchers("/login") // Add this line to ignore CSRF for login
                 )
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers( "/index")
+                        .requestMatchers("/index")
                         .permitAll()
                         .requestMatchers("/login", "/register", "/logout", "/error")
                         .permitAll()
+                        .requestMatchers("/api/userRankings")  // Add this line before the general /api/** matcher
+                        .permitAll()
                         .requestMatchers("/api/**")
-                        .authenticated() // secure only API calls
+                        .authenticated()
                         .anyRequest()
-                        .permitAll() // allow all other frontend routes
+                        .permitAll()
                 )
 
                 .formLogin(form -> form
