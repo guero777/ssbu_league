@@ -60,7 +60,7 @@ return (
                         required
                     />
                 </div>
-                <button type={"submit"} className={"login-button"}>
+                <button type={"submit"} className={"login-submit-button"}>
                     Sign in
                 </button>
             </form>

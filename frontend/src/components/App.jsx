@@ -13,13 +13,13 @@ const App = () => {
         <div className="nav-logo">SSBU League</div>
         <div className="nav-buttons">
           <button
-            className="auth-button login-button"
+            className="login-button"
             onClick={() => navigate('/login')}
           >
             Login
           </button>
           <button
-            className="auth-button register-button"
+            className="register-button"
             onClick={() => navigate('/register')}
           >
             Register

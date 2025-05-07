@@ -11,7 +11,7 @@ const AdminPanel = () => {
     return (
         <div className="admin-panel-container">
             <div className="admin-panel-header">
-                <button onClick={() => navigate('/dashboard')}>
+                <button className={"back-button"} onClick={() => navigate('/dashboard')}>
                     Back
                 </button>
                 <h1>Admin Panel</h1>

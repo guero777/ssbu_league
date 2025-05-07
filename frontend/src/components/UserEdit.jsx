@@ -1,9 +1,9 @@
-// src/components/EditUserModal.jsx
+// src/components/EditUser.jsx
 import React, { useState } from 'react';
 import './UserEdit.css';
 import axios from 'axios';
 
-const EditUserModal = ({ user, onClose, onUserUpdated }) => {
+const EditUser = ({ user, onClose, onUserUpdated }) => {
     const [editedUser, setEditedUser] = useState({
         ...user,
         password: '' // Empty password field by default
@@ -71,4 +71,4 @@ const EditUserModal = ({ user, onClose, onUserUpdated }) => {
     );
 };
 
-export default EditUserModal;
+export default EditUser;
