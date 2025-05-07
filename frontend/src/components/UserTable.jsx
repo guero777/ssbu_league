@@ -2,33 +2,39 @@
 import React, { useState, useEffect } from 'react';
 import './UserTable.css';
 import axios from 'axios';
+import UserEdit from './UserEdit.jsx';
 
 const UserTable = () => {
     const [users, setUsers] = useState([]);
+    const [selectedUser, setSelectedUser] = useState(null);
 
     useEffect(() => {
-        const fetchUsers = async () => {
-            try {
-                const response = await axios.get('http://localhost:8080/api/get-user-table', {
-                    withCredentials: true
-                });
-                setUsers(response.data);
-            } catch (error) {
-                console.error('Error fetching users:', error);
-            }
-        };
-
         fetchUsers();
     }, []);
 
-    const formatDate = (dateString) => {
-        return new Date(dateString).toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: 'short',
-            day: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit'
-        });
+    const fetchUsers = async () => {
+        try {
+            const response = await axios.get('http://localhost:8080/api/get-user-table', {
+                withCredentials: true
+            });
+            setUsers(response.data);
+        } catch (error) {
+            console.error('Error fetching users:', error);
+        }
+    };
+
+
+    const handleEditClick = (user) => {
+        setSelectedUser(user);
+    };
+
+    const handleCloseModal = () => {
+        setSelectedUser(null);
+    };
+
+    const handleUserUpdated = () => {
+        fetchUsers(); // Refresh the table after update
+        handleCloseModal();
     };
 
     return (
@@ -36,28 +42,24 @@ const UserTable = () => {
             <table className="user-table">
                 <thead>
                 <tr>
-                    <th>ID</th>
                     <th>Username</th>
                     <th>Password</th>
                     <th>Gamer Tag</th>
-                    <th>Created At</th>
                     <th>Role</th>
-                    <th>Edit???</th>
+                    <th>Actions</th>
                 </tr>
                 </thead>
                 <tbody>
                 {users.map((user) => (
-                    <tr key={user.id}>
-                        <td>{user.id}</td>
+                    <tr key={user.username}>
                         <td>{user.username}</td>
                         <td>****</td>
                         <td>{user.gamerTag || '-'}</td>
-                        <td>{formatDate(user.createdAt)}</td>
                         <td>{user.role}</td>
                         <td>
                             <button
                                 className="edit-button"
-                                onClick={() => console.log('Edit clicked for:', user.username)}
+                                onClick={() => handleEditClick(user)}
                             >
                                 Edit
                             </button>
@@ -66,6 +68,14 @@ const UserTable = () => {
                 ))}
                 </tbody>
             </table>
+
+            {selectedUser && (
+                <UserEdit
+                    user={selectedUser}
+                    onClose={handleCloseModal}
+                    onUserUpdated={handleUserUpdated}
+                />
+            )}
         </div>
     );
 };
