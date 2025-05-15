@@ -2,10 +2,9 @@ package com.example.ssbu_league.controller;
 
 
 import com.example.ssbu_league.dto.RegistrationRequest;
+import com.example.ssbu_league.dto.UserDTOMapper;
 import com.example.ssbu_league.dto.UserScoreDTO;
-import com.example.ssbu_league.dto.UserToDTOMapper;
 import com.example.ssbu_league.models.AppUser;
-import com.example.ssbu_league.repositories.AppUserRepository;
 import com.example.ssbu_league.services.AppUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +23,18 @@ public class UserController {
     @Autowired
     private AppUserService appUserService;
 
+
+    @DeleteMapping("/delete-user/{username}")
+    public ResponseEntity<?> deleteUser(@PathVariable String username) {
+        try {
+            appUserService.deleteByUsername(username);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error deleting user: " + e.getMessage());
+        }
+    }
+
+
     @GetMapping("get-user-table")
     public List<AppUser> getUserTable() {
         return appUserService.getAllUsers();
@@ -34,15 +45,15 @@ public class UserController {
     @GetMapping("/userRankings")
     public List<UserScoreDTO> getAllUserScores() {
 
-        UserToDTOMapper mapper = new UserToDTOMapper();
+        UserDTOMapper mapper = new UserDTOMapper();
 
         return appUserService.getAllUsers()
                 .stream()
-                .map(mapper::toDTO)
+                .map(mapper::toUserScoreDTO)
                 .collect(Collectors.toList());
     }
 
-    /*  returns the role from the currently logged in user */
+    /*  returns the role from the currently logged-in user */
     @GetMapping("/getRole")
     public String getCurrentUserRole() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -66,13 +77,13 @@ public class UserController {
         String validationError = appUserService.validateAndCreateUser(username, password, passwordConfirm);
 
         if (validationError != null) {
-            // If validation fails, return error message and show the form again
+            // If validation fails, returns an error message and shows the form again
             model.addAttribute("error", validationError);
             model.addAttribute("user", new AppUser()); // Add empty user to the form
             return "register";
         }
 
-        // If user creation is successful, redirect to home page
+        // If user creation is successful, redirects to a homepage
         return "redirect:/";
     }*/
 

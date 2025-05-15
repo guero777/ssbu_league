@@ -11,13 +11,12 @@ const Dashboard = () => {
 
     return (
         <div className="dashboard-container">
-            <h1>Dashboard</h1>
             <div className="dashboard-navigation">
                 <button
                     onClick={() => navigate('/user-panel')}
                     className="user-panel-button"
                 >
-                    User Panel
+                    Profile Settings
                 </button>
 
                 {userRole === 'ADMIN' && (
@@ -25,7 +24,7 @@ const Dashboard = () => {
                         onClick={() => navigate('/admin-panel')}
                         className="admin-panel-button"
                     >
-                        Admin Panel
+                        Admin
                     </button>
                 )}
             </div>

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
+@RequestMapping("/admin-api")
 @Controller
 public class AdminController {
 
@@ -25,11 +26,12 @@ public class AdminController {
     }
 
 
-    @GetMapping("/admin")
+    // TODO implement correctly
+    @GetMapping("/delete-user")
     public String adminPage(Model model) {
         List<AppUser> users = appUserRepository.findAll();
         model.addAttribute("users", users);
-        return "admin";
+        return "TEST";
     }
     // Change the user's role when the checkbox is toggled
     @PostMapping("/admin/changeRole")

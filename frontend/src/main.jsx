@@ -8,7 +8,7 @@ import Scoreboard from "./components/Scoreboard.jsx";
 import Login from "./components/Login.jsx";
 import Register from "./components/Register.jsx";
 import Dashboard from "./components/Dashboard.jsx";
-import UserPanel from "./components/UserPanel.jsx";
+import Profile from "./components/Profile.jsx";
 import AdminPanel from "./components/AdminPanel.jsx";
 import { AuthProvider } from './components/AuthContext.jsx'; // Updated path
 
@@ -20,7 +20,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
                     <Route path="/" element={<App />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/register" element={<Register />} />
-                    <Route path="/user-panel" element={<UserPanel/>} />
+                    <Route path="/user-panel" element={<Profile/>} />
                     <Route path="/admin-panel" element={<AdminPanel />} />
                     <Route path="/dashboard" element={<Dashboard />} />
                 </Routes>

@@ -4,6 +4,7 @@ import com.example.ssbu_league.configurations.AppUserPrincipal;
 import com.example.ssbu_league.models.AppUser;
 import com.example.ssbu_league.repositories.AppUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -53,6 +54,17 @@ public class AppUserService implements UserDetailsService {
         appUserRepository.save(newUser);
     }
 
+
+    // Delete user by username and return error message if user not found
+    public String deleteByUsername(String username) {
+        AppUser user = appUserRepository.findByUsername(username);
+        if (user != null) {
+            appUserRepository.delete(user);
+            return null; // Indicate success
+        }
+        return "User not found"; // Return error message
+    }
+
     // Delete user by id
     public void deleteUserById(int id) {
         appUserRepository.deleteById(id);
@@ -60,12 +72,12 @@ public class AppUserService implements UserDetailsService {
 
     public String getRole(String username) {
         AppUser user = appUserRepository.findByUsername(username);
-        return user.getRole().name();
+        return user.role().name();
     }
 
     // Check if the user is an admin
     public boolean isAdmin(AppUser appUser) {
-        return appUser.getRole() == AppUser.Role.ADMIN;
+        return appUser.role() == AppUser.Role.ADMIN;
     }
 
     // Toggles Admin/User role

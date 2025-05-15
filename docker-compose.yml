@@ -15,6 +15,20 @@ services:
     networks:
       - my-network
 
+  test_db:
+    image: postgres:15-alpine
+    container_name: smash_test_db
+    # Expose a different host port if 5432 is already taken,
+    # e.g. "5433:5432"
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: smash_league_test
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin
+    volumes:
+      - ./init/:/docker-entrypoint-initdb.d/
+
 volumes:
   postgres_data:
 

@@ -21,11 +21,11 @@ public class AppUserPrincipal implements UserDetails {
 
     @Override
     public String getPassword() {
-        return appUser.getPassword();
+        return appUser.password();
     }
 
     @Override
     public String getUsername() {
-        return appUser.getUsername();
+        return appUser.username();
     }
 }

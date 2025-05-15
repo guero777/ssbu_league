@@ -37,6 +37,19 @@ const UserTable = () => {
         handleCloseModal();
     };
 
+const handleDelete = async (username) => {
+  try {
+    // note: use axios.delete and put the username into the URL
+    await axios.delete(
+      `http://localhost:8080/api/delete-user/${encodeURIComponent(username)}`,
+      { withCredentials: true }
+    );
+    fetchUsers();
+  } catch (error) {
+    console.error("Error deleting user:", error);
+  }
+};
+
     return (
         <div className="user-table-container">
             <table className="user-table">
@@ -62,6 +75,12 @@ const UserTable = () => {
                                 onClick={() => handleEditClick(user)}
                             >
                                 Edit
+                            </button>
+                            <button
+                                className="delete-button"
+                                onClick={() => handleDelete(user.username)}
+                            >
+                                Delete
                             </button>
                         </td>
                     </tr>

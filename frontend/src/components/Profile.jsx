@@ -1,7 +1,7 @@
-// src/components/UserPanel.jsx
+// src/components/Profile.jsx
 import React from 'react';
 
-const UserPanel = () => {
+const Profile = () => {
     return (
         <div className="user-panel">
             <h1>User Panel</h1>
@@ -10,4 +10,4 @@ const UserPanel = () => {
     );
 };
 
-export default UserPanel;
+export default Profile;

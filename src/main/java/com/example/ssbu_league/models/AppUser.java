@@ -1,8 +1,6 @@
 package com.example.ssbu_league.models;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
@@ -13,38 +11,26 @@ import java.util.List;
 @Entity
 public class AppUser {
 
-    @Getter
-    @Id
-    @GeneratedValue
-    private int id;
-
     public enum Role {
         USER, ADMIN
     }
 
-    @Getter
-    @Setter
+    @Id
+    @GeneratedValue
+    private int id;
+
     @Column(unique = true, nullable = false)
     private String username;
 
-    @Getter
-    @Setter
     @Column(nullable = false)
     private String password;
 
-    @Getter
-    @Setter
     private String gamerTag;
 
-    @Getter
-    @Setter
     private LocalDateTime createdAt;
 
-    @Getter
-    @Setter
     private int score;
 
-    @Getter
     @Enumerated(EnumType.STRING)
     private Role role;
 
@@ -68,16 +54,66 @@ public class AppUser {
                 '}';
     }
 
+    // Logic for spring security auth
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority("ROLE_" + role.name()));
     }
 
     public void switchRole() {
-        if (role == Role.ADMIN) {
-            role = Role.USER;
-        }
-        else {
-            role = Role.ADMIN;
-        }
+        if (role == Role.ADMIN) role = Role.USER;
+        else role = Role.ADMIN;
+    }
+
+    public int id() {
+        return id;
+    }
+
+
+    public String username() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String password() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String gamerTag() {
+        return gamerTag;
+    }
+
+    public void setGamerTag(String gamerTag) {
+        this.gamerTag = gamerTag;
+    }
+
+    public LocalDateTime createdAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public int score() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
+
+    public Role role() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 }
