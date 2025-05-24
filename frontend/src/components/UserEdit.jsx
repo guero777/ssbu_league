@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import './UserEdit.css';
 import axios from 'axios';
+import { API_BASE_URL } from '../config';
 
 const EditUser = ({ user, onClose, onUserUpdated }) => {
     const [editedUser, setEditedUser] = useState({
@@ -12,7 +13,7 @@ const EditUser = ({ user, onClose, onUserUpdated }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await axios.put(`http://localhost:8080/api/users/${user.id}`, editedUser, {
+            await axios.put(`${API_BASE_URL}/api/users/${user.id}`, editedUser, {
                 withCredentials: true
             });
             onUserUpdated(); // Refresh the table data

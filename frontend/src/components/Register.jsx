@@ -1,5 +1,6 @@
 import {useState} from "react";
 import axios from "axios";
+import { API_BASE_URL } from '../config';
 import {useNavigate} from "react-router-dom";
 import './Register.css'
 
@@ -30,7 +31,7 @@ const Register = () => {
         }
 
         try {
-            const response = await fetch('http://localhost:8080/api/register', {
+            const response = await fetch(`${API_BASE_URL}/api/register`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

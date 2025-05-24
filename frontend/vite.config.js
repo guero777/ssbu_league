@@ -6,5 +6,10 @@ export default defineConfig({
   plugins: [react()],
   build: {
     outDir: '../src/main/resources/static',
-  }
+    emptyOutDir: true,
+    assetsDir: 'assets',
+    copyPublicDir: true
+  },
+  base: '/',
+  publicDir: 'public'
 })

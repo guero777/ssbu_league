@@ -4,7 +4,6 @@ import ReactDOM from 'react-dom/client';
 import '../index.css';
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import App from "./components/App.jsx";
-import Scoreboard from "./components/Scoreboard.jsx";
 import Login from "./components/Login.jsx";
 import Register from "./components/Register.jsx";
 import Dashboard from "./components/Dashboard.jsx";
