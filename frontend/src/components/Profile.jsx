@@ -18,7 +18,7 @@ const Profile = () => {
 
     useEffect(() => {
         // Fetch the current user's username when component mounts
-        fetch('http://localhost:8080/api/user/current-user', {
+        fetch('/api/user/current-user', {
             credentials: 'include',  // This is important for sending cookies
             headers: {
                 'Accept': 'application/json',
@@ -45,7 +45,7 @@ const Profile = () => {
             });
             
         // Fetch the current user's gamertag
-        fetch('http://localhost:8080/api/user/current-gamertag', {
+        fetch('/api/user/current-gamertag', {
             credentials: 'include',
             headers: {
                 'Accept': 'application/json',
@@ -71,7 +71,7 @@ const Profile = () => {
             });
 
         // Fetch available characters
-        fetch('http://localhost:8080/api/characters', {
+        fetch('/api/characters', {
             credentials: 'include',
             headers: {
                 'Accept': 'application/json',
@@ -97,7 +97,7 @@ const Profile = () => {
             });
 
         // Fetch user's main characters
-        fetch('http://localhost:8080/api/user/main-characters', {
+        fetch('/api/user/main-characters', {
             credentials: 'include',
             headers: {
                 'Accept': 'application/json',
@@ -145,7 +145,7 @@ const Profile = () => {
             return;
         }
         
-        fetch('http://localhost:8080/api/user/change-gamertag', {
+        fetch('/api/user/change-gamertag', {
             method: 'POST',
             credentials: 'include',
             headers: {
@@ -214,7 +214,7 @@ const Profile = () => {
     const updateMainCharacters = (charactersList) => {
         const characterNames = charactersList.map(char => char.name);
         
-        fetch('http://localhost:8080/api/user/update-main-characters', {
+        fetch('/api/user/update-main-characters', {
             method: 'POST',
             credentials: 'include',
             headers: {

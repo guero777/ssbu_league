@@ -9,7 +9,7 @@ const Scoreboard = () => {
 
   const fetchRankings = async () => {
     try {
-      const response = await axios.get('http://localhost:8080/api/userRankings', {
+      const response = await axios.get('/api/userRankings', {
         withCredentials: true
       });
       // Sort the rankings by score in descending order

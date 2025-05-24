@@ -1,6 +1,6 @@
 /* Dashboard.css */
 .dashboard-container {
-    background-image: url('http://localhost:8080/images/smashLogoFire.jpg');
+    background-image: url('/images/smashLogoFire.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;

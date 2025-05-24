@@ -14,7 +14,7 @@ const UserTable = () => {
 
     const fetchUsers = async () => {
         try {
-            const response = await axios.get('http://localhost:8080/api/get-user-table', {
+            const response = await axios.get('/api/get-user-table', {
                 withCredentials: true
             });
             setUsers(response.data);
@@ -41,7 +41,7 @@ const handleDelete = async (username) => {
   try {
     // note: use axios.delete and put the username into the URL
     await axios.delete(
-      `http://localhost:8080/api/delete-user/${encodeURIComponent(username)}`,
+      `/api/delete-user/${encodeURIComponent(username)}`,
       { withCredentials: true }
     );
     fetchUsers();

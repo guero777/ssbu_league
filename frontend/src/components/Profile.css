@@ -1,5 +1,5 @@
 .profile-container {
-    background-image: url('http://localhost:8080/images/logo-calm.jpg');
+    background-image: url('/images/logo-calm.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
