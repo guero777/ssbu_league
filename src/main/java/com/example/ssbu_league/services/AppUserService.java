@@ -2,9 +2,9 @@ package com.example.ssbu_league.services;
 
 import com.example.ssbu_league.configurations.AppUserPrincipal;
 import com.example.ssbu_league.models.AppUser;
+import com.example.ssbu_league.models.Character;
 import com.example.ssbu_league.repositories.AppUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -12,6 +12,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -26,20 +27,25 @@ public class AppUserService implements UserDetailsService {
         this.appUserRepository = appUserRepository;
     }
 
-    public String validateAndCreateUser(String username, String password, String passwordConfirm) {
+    // UserDetailService implementation requires returning a Principal for login and session purpose
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        AppUser appUser = appUserRepository.findByUsername(username);
+        if (appUser == null) {
+            throw new UsernameNotFoundException(username);
+        }
+        return new AppUserPrincipal(appUser);
+    }
+
+    public String validateAndCreateUser(String username, String password) {
         // Check if username is already taken
         if (appUserRepository.existsByUsername(username)) {
             return "Username already exists! Please choose another one.";
         }
 
         // Check if password is too short
-        if (password.length() < 6) {
-            return "Password must be at least 6 characters!";
-        }
-
-        // Check if passwords match
-        if (!password.equals(passwordConfirm)) {
-            return "Passwords do not match!";
+        if (password.length() < 4) {
+            return "Password must be at least 4 characters!";
         }
 
         // All validations passed, save the new user
@@ -95,14 +101,40 @@ public class AppUserService implements UserDetailsService {
     public List<AppUser> getAllUsers() {
         return appUserRepository.findAll(); // Fetch all users
     }
-
-    // UserDetailService implementation requires returning a Principal for login and session purpose
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        AppUser appUser = appUserRepository.findByUsername(username);
-        if (appUser == null) {
-            throw new UsernameNotFoundException(username);
+    
+    // Get user's gamertag by username
+    public String getGamerTag(String username) {
+        AppUser user = appUserRepository.findByUsername(username);
+        if (user != null) {
+            return user.gamerTag();
         }
-        return new AppUserPrincipal(appUser);
+        return null;
+    }
+    
+    // Update user's gamertag
+    public void updateGamerTag(String username, String gamerTag) {
+        AppUser user = appUserRepository.findByUsername(username);
+        if (user != null) {
+            user.setGamerTag(gamerTag);
+            appUserRepository.save(user);
+        }
+    }
+    
+    // Get user's main characters by username
+    public List<Character> getMainCharacters(String username) {
+        AppUser user = appUserRepository.findByUsername(username);
+        if (user != null) {
+            return user.getMainCharacters();
+        }
+        return new ArrayList<>();
+    }
+    
+    // Update user's main characters
+    public void updateMainCharacters(String username, List<Character> characters) {
+        AppUser user = appUserRepository.findByUsername(username);
+        if (user != null) {
+            user.setMainCharacters(characters);
+            appUserRepository.save(user);
+        }
     }
 }

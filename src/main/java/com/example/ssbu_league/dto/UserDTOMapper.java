@@ -9,8 +9,8 @@ public class UserDTOMapper {
     public UserScoreDTO toUserScoreDTO(AppUser appUser) {
         return new UserScoreDTO(
                 appUser.gamerTag(),
-                appUser.score()
-                // TODO Update accordingly to UserToDTOMapper
+                appUser.score(),
+                appUser.getMainCharacters()
         );
     }
 

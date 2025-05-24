@@ -1,7 +1,7 @@
 import {useState} from "react";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
-
+import './Register.css'
 
 const Register = () => {
 
@@ -11,23 +11,53 @@ const Register = () => {
     const [error, setError] = useState("");
     const navigate = useNavigate();
 
+    const MINIMUM_PASSWORD_LENGTH = 4;
 
-    const handleSubmit = (e) => {
 
+    const handleSubmit = async (e) => {
         e.preventDefault();
         setError("");
 
         // Client-Side validation
         if (password.length < MINIMUM_PASSWORD_LENGTH) {
             setError("Password must be at least " + MINIMUM_PASSWORD_LENGTH + " characters long");
+            return;
+        }
+
+        if (password !== repeatPassword) {
+            setError("Passwords do not match");
+            return;
+        }
+
+        try {
+            const response = await fetch('http://localhost:8080/api/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    username: username,
+                    password: password,
+                })
+            });
+
+            if (response.ok) {
+                navigate('/login');
+            } else {
+                const errorData = await response.text();
+                setError(errorData || 'Registration failed');
+            }
+        } catch (error) {
+            setError('Network error: ' + error.message);
         }
     }
 
     return (
         <>
             <div className="register-container">
-                <h2 className={"register-header"}> Register a new account </h2>
-                <form onSubmit={handleSubmit}>
+                <h2 className={"register-header"}> Wanna fight? </h2>
+                {error && <div className="error-message" style={{color: 'red', marginBottom: '1rem'}}>{error}</div>}
+                <form className = "register-form" onSubmit={handleSubmit}>
                     <div className={"username-field"}>
                         <input
                             type="text"
@@ -59,7 +89,7 @@ const Register = () => {
                         />
                     </div>
                     <button type={"submit"} className={"register-button"}>
-                        Login
+                        Register
                     </button>
                 </form>
             </div>

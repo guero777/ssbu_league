@@ -1,20 +1,10 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {useNavigate} from 'react-router-dom';
 import './App.css';
 import Scoreboard from "./Scoreboard.jsx";
-import {useAuth} from './AuthContext.jsx';
 
 const App = () => {
   const navigate = useNavigate();
-  const {userRole} = useAuth();
-
-
-  useEffect(() => {
-    if (userRole == "ADMIN" || userRole == "USER") {
-      navigate('/dashboard');
-    }
-  }, [userRole, navigate]);
-
 
   // TODO put Header html in component, only return header.jsx and scoreboard.jsx
   return (

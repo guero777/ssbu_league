@@ -17,7 +17,7 @@ const Scoreboard = () => {
       setRankings(sortedRankings);
       setLoading(false);
     } catch (err) {
-      setError(`Error loading rankings: ${err.message}`);
+      setError(`Error loading scoreboard: ${err.message}`);
       setLoading(false);
     }
   };
@@ -26,8 +26,10 @@ const Scoreboard = () => {
     fetchRankings();
   }, []);
 
-  if (loading) return <div className="loading">Loading rankings...</div>;
+  if (loading) return <div className="loading">Loading Scoreboard...</div>;
   if (error) return <div className="error">{error}</div>;
+
+
 
   return (
     <div className="scoreboard">
@@ -41,11 +43,13 @@ const Scoreboard = () => {
         </thead>
         <tbody>
           {rankings.map((player, index) => (
-            <tr key={player.gamerTag || index}>
-              <td>{index + 1}</td>
-              <td>{player.gamerTag || 'N/A'}</td>
-              <td>{player.score}</td>
-            </tr>
+            player.gamerTag   && (
+              <tr key={player.gamerTag}>
+                <td>{index + 1}</td>
+                <td>{player.gamerTag}</td>
+                <td>{player.score}</td>
+              </tr>
+            )
           ))}
         </tbody>
       </table>

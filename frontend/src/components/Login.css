@@ -1,6 +1,6 @@
 /* Login.css */
 .login-container {
-    background-image: url('http://localhost:8080/assets/smashLogoFire.jpg');
+    background-image: url('http://localhost:8080/images/logo-calm.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -15,6 +15,11 @@
     justify-content: center;
 }
 
+/* 
+   Styles the form within the login container with a semi-transparent
+   dark background, generous padding, rounded corners, and a fixed 
+   maximum width. Also includes a solid border for definition.
+*/
 .login-container form {
     background-color: rgba(0, 0, 0, 0.7);
     padding: 2rem;

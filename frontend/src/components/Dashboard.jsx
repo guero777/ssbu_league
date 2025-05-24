@@ -13,7 +13,7 @@ const Dashboard = () => {
         <div className="dashboard-container">
             <div className="dashboard-navigation">
                 <button
-                    onClick={() => navigate('/user-panel')}
+                    onClick={() => navigate('/user/profile')}
                     className="user-panel-button"
                 >
                     Profile Settings
@@ -21,7 +21,7 @@ const Dashboard = () => {
 
                 {userRole === 'ADMIN' && (
                     <button
-                        onClick={() => navigate('/admin-panel')}
+                        onClick={() => navigate('/admin/panel')}
                         className="admin-panel-button"
                     >
                         Admin

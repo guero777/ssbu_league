@@ -5,6 +5,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -33,6 +34,12 @@ public class AppUser {
 
     @Enumerated(EnumType.STRING)
     private Role role;
+    
+    @ElementCollection
+    @Enumerated(EnumType.STRING)
+    @CollectionTable(name = "user_main_characters", joinColumns = @JoinColumn(name = "user_id"))
+    @Column(name = "character")
+    private List<Character> mainCharacters = new ArrayList<>();
 
     public AppUser() {
     }
@@ -115,5 +122,27 @@ public class AppUser {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+    
+    public List<Character> getMainCharacters() {
+        return mainCharacters;
+    }
+    
+    public void setMainCharacters(List<Character> mainCharacters) {
+        if (mainCharacters.size() <= 3) {
+            this.mainCharacters = mainCharacters;
+        } else {
+            this.mainCharacters = mainCharacters.subList(0, 3);
+        }
+    }
+    
+    public void addMainCharacter(Character character) {
+        if (mainCharacters.size() < 3 && !mainCharacters.contains(character)) {
+            mainCharacters.add(character);
+        }
+    }
+    
+    public void removeMainCharacter(Character character) {
+        mainCharacters.remove(character);
     }
 }

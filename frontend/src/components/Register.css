@@ -1,0 +1,53 @@
+.register-container {
+    background-image: url('http://localhost:8080/images/smashLogoFire.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height: 100vh;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.register-header {
+    color: white;
+    margin-bottom: 2rem;
+    text-align: center;
+    font-size: 1.8rem;
+}
+
+.register-form {
+    background-color: rgba(81, 7, 7, 0.5);
+    padding: 2rem;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 400px;
+    border: 2px solid rgb(56, 5, 5);
+}
+
+.username-field input,
+.password-field input {
+  text-align: center;
+}
+
+.username-field input::placeholder,
+.password-field input::placeholder {
+  text-align: center;
+}
+
+
+.register-button {
+    width: 100%;
+    padding: 12px;
+    background-color: rgb(81, 7, 7);
+    color: white;
+    border: 2px solid rgb(56, 5, 5);
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem
+}

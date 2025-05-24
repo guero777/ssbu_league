@@ -21,24 +21,26 @@ const Login = () => {
             formData.append("username", username);
             formData.append("password", password);
 
-            await axios.post('http://localhost:8080/login', formData, {
+            await axios.post('http://localhost:8080/api/login', formData, {
                 headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'Accept': 'application/json'
                 },
                 withCredentials: true
             });
 
-            navigate('/dashboard');
+            // If login successful, navigate to dashboard
+            navigate('/user/dashboard');
         } catch (error) {
             console.error('Login error:', error);
-            setError("Invalid username or password");
+            setError(error.response?.data || "Invalid username or password");
         }
     };
 
 return (
     <>
         <div className="login-container">
-            <h2 className={"login-header"}> Log into your account </h2>
+            
             <form onSubmit={handleLogin}>
                 <div className={"username-field"}>
                     <input

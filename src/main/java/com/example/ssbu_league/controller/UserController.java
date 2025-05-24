@@ -1,10 +1,10 @@
 package com.example.ssbu_league.controller;
 
-
-import com.example.ssbu_league.dto.RegistrationRequest;
+import com.example.ssbu_league.dto.UserRegistrationDTO;
 import com.example.ssbu_league.dto.UserDTOMapper;
 import com.example.ssbu_league.dto.UserScoreDTO;
 import com.example.ssbu_league.models.AppUser;
+import com.example.ssbu_league.models.Character;
 import com.example.ssbu_league.services.AppUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +12,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
@@ -23,8 +26,7 @@ public class UserController {
     @Autowired
     private AppUserService appUserService;
 
-
-    @DeleteMapping("/delete-user/{username}")
+    @DeleteMapping("/admin/delete-user/{username}")
     public ResponseEntity<?> deleteUser(@PathVariable String username) {
         try {
             appUserService.deleteByUsername(username);
@@ -34,74 +36,142 @@ public class UserController {
         }
     }
 
-
-    @GetMapping("get-user-table")
+    @GetMapping("/admin/get-user-table")
     public List<AppUser> getUserTable() {
         return appUserService.getAllUsers();
     }
 
-    /*  returns a list of all UserScoreDTO
-    *   look for UserScoreDTO    */
     @GetMapping("/userRankings")
     public List<UserScoreDTO> getAllUserScores() {
-
         UserDTOMapper mapper = new UserDTOMapper();
-
         return appUserService.getAllUsers()
                 .stream()
                 .map(mapper::toUserScoreDTO)
                 .collect(Collectors.toList());
     }
 
-    /*  returns the role from the currently logged-in user */
-    @GetMapping("/getRole")
+    @GetMapping("/user/getRole")
     public String getCurrentUserRole() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
         return appUserService.getRole(username);
     }
 
-
-    // TODO IMPLEMENT REGISTER ENDPOINT
-    @GetMapping("/register")
-    public ResponseEntity<?> register(@RequestBody RegistrationRequest request) {
-        return null;
+    @GetMapping("/user/current-user")
+    public ResponseEntity<String> getCurrentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated() && !authentication.getName().equals("anonymousUser")) {
+            return ResponseEntity.ok(authentication.getName());
+        }
+        return ResponseEntity.status(401).body("Not authenticated");
     }
 
-    /*@PostMapping("/register")
-    public String register(@RequestParam String username,
-                           @RequestParam String password,
-                           @RequestParam String passwordConfirm,
-                           Model model) {
-        // Delegate validation and user creation to the service
-        String validationError = appUserService.validateAndCreateUser(username, password, passwordConfirm);
+    @PostMapping("/register")
+    public ResponseEntity<?> register(@RequestBody UserRegistrationDTO request) {
+        try {
+            String validationError = appUserService.validateAndCreateUser(
+                request.getUsername(),
+                request.getPassword()
+            );
 
-        if (validationError != null) {
-            // If validation fails, returns an error message and shows the form again
-            model.addAttribute("error", validationError);
-            model.addAttribute("user", new AppUser()); // Add empty user to the form
-            return "register";
+            if (validationError != null) {
+                return ResponseEntity.badRequest().body(validationError);
+            }
+
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error registering user: " + e.getMessage());
         }
+    }
 
-        // If user creation is successful, redirects to a homepage
-        return "redirect:/";
-    }*/
-
-
-    /*@GetMapping("/profile")
-    public String profile(Model model, AppUserPrincipal principal) {
-        if (principal != null) {
-            String username = principal.getUsername();
-            AppUser currentUser = appUserRepository.findByUsername(username);
-            model.addAttribute("user", currentUser);
+    @GetMapping("/user/current-gamertag")
+    public ResponseEntity<?> getCurrentGamerTag() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated() && !authentication.getName().equals("anonymousUser")) {
+            String username = authentication.getName();
+            String gamerTag = appUserService.getGamerTag(username);
+            return ResponseEntity.ok(gamerTag);
         }
-        return "profile";
-    }*/
+        return ResponseEntity.status(401).body("Not authenticated");
+    }
 
-    /*@GetMapping("/user/users")
-    public String users(Model model) {
-        model.addAttribute("users", appUserService.getAllUserScores());
-        return "users";
-    }*/
-
+    @PostMapping("/user/change-gamertag")
+    public ResponseEntity<?> changeGamerTag(@RequestBody Map<String, String> request) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated() && !authentication.getName().equals("anonymousUser")) {
+            String username = authentication.getName();
+            String newGamerTag = request.get("gamerTag");
+            
+            if (newGamerTag == null || newGamerTag.trim().isEmpty()) {
+                return ResponseEntity.badRequest().body("Gamertag cannot be empty");
+            }
+            
+            try {
+                appUserService.updateGamerTag(username, newGamerTag);
+                return ResponseEntity.ok().build();
+            } catch (Exception e) {
+                return ResponseEntity.badRequest().body("Error updating gamertag: " + e.getMessage());
+            }
+        }
+        return ResponseEntity.status(401).body("Not authenticated");
+    }
+    
+    // Character-related endpoints
+    @GetMapping("/characters")
+    public List<Map<String, String>> getAllCharacters() {
+        return Arrays.stream(Character.values())
+                .sorted((c1, c2) -> c1.getFullName().compareTo(c2.getFullName()))
+                .map(character -> {
+                    Map<String, String> characterMap = new HashMap<>();
+                    characterMap.put("name", character.name());
+                    characterMap.put("fullName", character.getFullName());
+                    characterMap.put("shortName", character.getShortName());
+                    return characterMap;
+                })
+                .collect(Collectors.toList());
+    }
+    
+    @GetMapping("/user/main-characters")
+    public ResponseEntity<?> getUserMainCharacters() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated() && !authentication.getName().equals("anonymousUser")) {
+            String username = authentication.getName();
+            List<Character> mainCharacters = appUserService.getMainCharacters(username);
+            
+            List<Map<String, String>> result = mainCharacters.stream()
+                    .map(character -> {
+                        Map<String, String> characterMap = new HashMap<>();
+                        characterMap.put("name", character.name());
+                        characterMap.put("fullName", character.getFullName());
+                        characterMap.put("shortName", character.getShortName());
+                        return characterMap;
+                    })
+                    .collect(Collectors.toList());
+            
+            return ResponseEntity.ok(result);
+        }
+        return ResponseEntity.status(401).body("Not authenticated");
+    }
+    
+    @PostMapping("/user/update-main-characters")
+    public ResponseEntity<?> updateMainCharacters(@RequestBody List<String> characterNames) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated() && !authentication.getName().equals("anonymousUser")) {
+            String username = authentication.getName();
+            
+            try {
+                List<Character> characters = characterNames.stream()
+                        .map(name -> Character.valueOf(name))
+                        .collect(Collectors.toList());
+                
+                appUserService.updateMainCharacters(username, characters);
+                return ResponseEntity.ok().build();
+            } catch (IllegalArgumentException e) {
+                return ResponseEntity.badRequest().body("Invalid character name");
+            } catch (Exception e) {
+                return ResponseEntity.badRequest().body("Error updating main characters: " + e.getMessage());
+            }
+        }
+        return ResponseEntity.status(401).body("Not authenticated");
+    }
 }

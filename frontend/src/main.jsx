@@ -20,9 +20,9 @@ ReactDOM.createRoot(document.getElementById('root')).render(
                     <Route path="/" element={<App />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/register" element={<Register />} />
-                    <Route path="/user-panel" element={<Profile/>} />
-                    <Route path="/admin-panel" element={<AdminPanel />} />
-                    <Route path="/dashboard" element={<Dashboard />} />
+                    <Route path="/user/profile" element={<Profile/>} />
+                    <Route path="/admin/panel" element={<AdminPanel />} />
+                    <Route path="/user/dashboard" element={<Dashboard />} />
                 </Routes>
             </AuthProvider>
         </BrowserRouter>
