@@ -42,10 +42,10 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173", "http://173.212.222.16:8080"));
+        configuration.setAllowedOrigins(Arrays.asList("http://173.212.222.16:8080"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(Arrays.asList("*"));
-        configuration.setExposedHeaders(Arrays.asList("*"));
+        configuration.setAllowedHeaders(Arrays.asList("Content-Type", "Authorization", "X-Requested-With"));
+        configuration.setExposedHeaders(Arrays.asList("Set-Cookie"));
         configuration.setAllowCredentials(true);
         
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
@@ -89,7 +89,13 @@ public class SecurityConfig {
                 .permitAll()
             )
             .sessionManagement(session -> session
-                .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+                .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
+                .maximumSessions(1)
+                .expiredUrl("/login?expired")
+            )
+            .rememberMe(remember -> remember
+                .key("uniqueAndSecureKey123")
+                .tokenValiditySeconds(86400)
             )
             .logout(logout -> logout
                 .logoutRequestMatcher(new AntPathRequestMatcher("/api/logout", "POST"))
