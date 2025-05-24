@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api")
-@CrossOrigin(origins = "http://localhost:5173") // Vite's default port
+@CrossOrigin(origins = {"http://localhost:5173", "http://173.212.222.16:8080"}) // Allow both local and VPS
 public class UserController {
 
     @Autowired
