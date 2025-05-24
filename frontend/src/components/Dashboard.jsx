@@ -18,6 +18,7 @@ const Dashboard = () => {
                 >
                     Profile Settings
                 </button>
+                <h3>{userRole}</h3>
 
                 {userRole === 'ADMIN' && (
                     <button

@@ -27,6 +27,24 @@ services:
     # Health check removed to speed up development
     restart: unless-stopped
 
+  postgres-prod:
+    image: 'postgres:15-alpine'
+    container_name: smash-scoreboard-prod-db
+    environment:
+      - 'POSTGRES_DB=smash_scoreboard_prod'
+      - 'POSTGRES_PASSWORD=prod_password'
+      - 'POSTGRES_USER=prod_user'
+    ports:
+      - '5434:5432'
+    volumes:
+      - postgres_prod_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U prod_user -d smash_scoreboard_prod"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
   pgadmin:
     image: dpage/pgadmin4:latest
     container_name: smash-scoreboard-pgadmin
@@ -43,3 +61,4 @@ services:
 volumes:
   postgres_dev_data:
   postgres_test_data:
+  postgres_prod_data:

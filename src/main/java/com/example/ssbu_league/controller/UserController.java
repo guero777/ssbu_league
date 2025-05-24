@@ -50,11 +50,17 @@ public class UserController {
                 .collect(Collectors.toList());
     }
 
-    @GetMapping("/user/getRole")
+    @GetMapping("/user/get-role")
     public String getCurrentUserRole() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
-        return appUserService.getRole(username);
+        System.out.println("Looking up user: " + username);
+        String role = appUserService.getRole(username);
+        if (role == null) {
+            System.out.println("User not found for username: " + username);
+            return "ANONYMOUS";
+        }
+        return role;
     }
 
     @GetMapping("/user/current-user")

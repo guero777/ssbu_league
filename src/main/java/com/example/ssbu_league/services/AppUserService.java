@@ -78,6 +78,10 @@ public class AppUserService implements UserDetailsService {
 
     public String getRole(String username) {
         AppUser user = appUserRepository.findByUsername(username);
+        if (user == null) {
+            System.out.println("User not found for username: " + username);
+            return null;
+        }
         return user.role().name();
     }
 

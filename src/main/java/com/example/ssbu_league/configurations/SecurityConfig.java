@@ -62,7 +62,7 @@ public class SecurityConfig {
                 .requestMatchers("/", "/login", "/register", "/index.html", "/static/**", "/images/**", "/assets/**").permitAll()
                 .requestMatchers("/user/**").permitAll()
                 .requestMatchers("/admin/**").hasRole("ADMIN")
-                .requestMatchers("/api/login", "/api/register", "/api/userRankings").permitAll()
+                .requestMatchers("/api/login", "/api/register", "/api/userRankings", "/api/user/get-role").permitAll()
                 .requestMatchers("/api/user/**").hasAnyRole("USER", "ADMIN")
                 .requestMatchers("/api/admin/**").hasRole("ADMIN")
                 .requestMatchers("/api/**").authenticated()
