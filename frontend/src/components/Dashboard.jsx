@@ -11,7 +11,7 @@ const Dashboard = () => {
 
     return (
         <div className="dashboard-container">
-            <h3 className='welcome-message'>Welcome, {username} ({userRole})</h3>
+            <h3 className='welcome-message'>Welcome, {username}</h3>
             <div className="dashboard-navigation">
                 <button
                     onClick={() => navigate('/user/profile')}
