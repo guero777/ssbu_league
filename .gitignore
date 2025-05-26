@@ -6,6 +6,7 @@ target/
 
 ### MY OWN ###
 docker-compose.yml
+compose.yaml
 
 ### STS ###
 .apt_generated
@@ -35,4 +36,3 @@ build/
 ### VS Code ###
 .vscode/
 
-compose.yaml
