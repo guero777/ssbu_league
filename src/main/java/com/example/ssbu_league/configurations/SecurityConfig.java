@@ -3,6 +3,7 @@ package com.example.ssbu_league.configurations;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,14 +18,10 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.beans.factory.annotation.Autowired;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-
-    @Autowired
-    private UserDetailsService userDetailsService;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -42,7 +39,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://173.212.222.16:8080"));
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173", "http://173.212.222.16:8080"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("Content-Type", "Authorization", "X-Requested-With"));
         configuration.setExposedHeaders(Arrays.asList("Set-Cookie"));
@@ -79,17 +76,25 @@ public class SecurityConfig {
             )
             .formLogin(form -> form
                 .loginProcessingUrl("/api/login")
-                .loginPage("/login") 
+                .loginPage("/login")
                 .successHandler((request, response, authentication) -> {
-                    response.setStatus(200);
+                    response.setStatus(HttpServletResponse.SC_OK);
                 })
                 .failureHandler((request, response, exception) -> {
-                    response.setStatus(401);
+                    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 })
-                .permitAll()
+            )
+            .logout(logout -> logout
+                .logoutUrl("/api/logout")
+                .logoutSuccessHandler((request, response, authentication) -> {
+                    response.setStatus(HttpServletResponse.SC_OK);
+                })
             )
             .sessionManagement(session -> session
-                .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
+                .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+            )
+            .sessionManagement(session -> session
+                .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
                 .maximumSessions(1)
                 .expiredUrl("/login?expired")
             )

@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import './UserTable.css';
 import axios from 'axios';
+import { API_BASE_URL } from '../config';
 import UserEdit from './UserEdit.jsx';
 
 const UserTable = () => {
@@ -14,12 +15,19 @@ const UserTable = () => {
 
     const fetchUsers = async () => {
         try {
-            const response = await axios.get('/api/get-user-table', {
-                withCredentials: true
+            const response = await axios.get(`${API_BASE_URL}/api/admin/get-user-table`, {
+                withCredentials: true,
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                }
             });
-            setUsers(response.data);
+            if (response.data) {
+                setUsers(response.data);
+            }
+            console.log('Fetched users:', response.data); // Debug log
         } catch (error) {
-            console.error('Error fetching users:', error);
+            console.error("Error fetching users:", error);
         }
     };
 
@@ -41,7 +49,7 @@ const handleDelete = async (username) => {
   try {
     // note: use axios.delete and put the username into the URL
     await axios.delete(
-      `/api/delete-user/${encodeURIComponent(username)}`,
+      `${API_BASE_URL}/api/delete-user/${encodeURIComponent(username)}`,
       { withCredentials: true }
     );
     fetchUsers();

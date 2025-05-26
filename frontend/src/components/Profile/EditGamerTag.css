@@ -1,0 +1,97 @@
+.profile-box {
+    background-color: rgba(0, 0, 0, 0.6);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto;
+    text-align: center;
+    color: white;
+}
+
+.edit-gamertag {
+    margin-bottom: 25px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.edit-gamertag input {
+    width: 80%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    text-align: center;
+    background-color: rgba(255, 255, 255, 0.7);
+}   
+
+.button-group {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    width: 80%;
+}
+
+.save-button, .cancel-button, .edit-button {
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    min-width: 80px;
+}
+
+.save-button {
+    background-color: #28a745;
+    color: white;
+    border: none;
+}
+
+.save-button:hover {
+    background-color: #1e7e34;
+}
+
+.cancel-button {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+}
+
+.cancel-button:hover {
+    background-color: #c82333;
+}
+
+.edit-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+}
+
+.edit-button:hover {
+    background-color: #0056b3;
+}
+
+.display-gamertag {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 80%;
+    margin: 0 auto;
+}
+
+.error-message {
+    color: #ff4d4d;
+    margin: 10px 0;
+    font-size: 14px;
+    text-align: center;
+}
+
+.success-message {
+    color: #4dff4d;
+    margin: 10px 0;
+    font-size: 14px;
+    text-align: center;
+}

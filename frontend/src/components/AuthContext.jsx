@@ -6,17 +6,35 @@ export const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
     const [userRole, setUserRole] = useState(null);
+    const [username, setUsername] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
 
+    const refreshAuthInfo = async () => {
+        try {
+            const { role, username } = await authService.getUserInfo();
+            setUserRole(role);
+            setUsername(username);
+        } catch (error) {
+            setUserRole(null);
+            setUsername(null);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
     useEffect(() => {
-        authService.getUserRole()
-            .then(setUserRole)
-            .catch(() => setUserRole(null))
-            .finally(() => setIsLoading(false));
+        refreshAuthInfo();
+    }, []);
+
+    // Refresh auth info when the window regains focus
+    useEffect(() => {
+        const onFocus = () => refreshAuthInfo();
+        window.addEventListener('focus', onFocus);
+        return () => window.removeEventListener('focus', onFocus);
     }, []);
 
     return (
-        <AuthContext.Provider value={{ userRole, isLoading }}>
+        <AuthContext.Provider value={{ userRole, username, isLoading, refreshAuthInfo }}>
             {children}
         </AuthContext.Provider>
     );

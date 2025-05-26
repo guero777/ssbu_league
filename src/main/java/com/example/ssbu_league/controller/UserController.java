@@ -50,17 +50,51 @@ public class UserController {
                 .collect(Collectors.toList());
     }
 
-    @GetMapping("/user/get-role")
-    public String getCurrentUserRole() {
+    @GetMapping("/user/get-info")
+    public ResponseEntity<?> getCurrentUserInfo() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !authentication.isAuthenticated() || authentication.getName().equals("anonymousUser")) {
+            return ResponseEntity.status(401).body("Not authenticated");
+        }
         String username = authentication.getName();
-        System.out.println("Looking up user: " + username);
         String role = appUserService.getRole(username);
         if (role == null) {
-            System.out.println("User not found for username: " + username);
-            return "ANONYMOUS";
+            return ResponseEntity.status(404).body("User not found");
         }
-        return role;
+        return ResponseEntity.ok().body(Map.of(
+            "username", username,
+            "role", role
+        ));
+    }
+
+    @GetMapping("/user/get-role")
+    public ResponseEntity<?> getCurrentUserRole() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !authentication.isAuthenticated() || authentication.getName().equals("anonymousUser")) {
+            return ResponseEntity.status(401).body("Not authenticated");
+        }
+        String username = authentication.getName();
+        String role = appUserService.getRole(username);
+        if (role == null) {
+            return ResponseEntity.status(404).body("User not found");
+        }
+        return ResponseEntity.ok(role);
+    }
+
+    @PutMapping("/user/edit-username")
+    public ResponseEntity<?> updateUsername(@RequestParam String newUsername) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return ResponseEntity.status(401).body("Not authenticated");
+        }
+        
+        String currentUsername = authentication.getName();
+        try {
+            appUserService.updateUsername(currentUsername, newUsername);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @GetMapping("/user/current-user")

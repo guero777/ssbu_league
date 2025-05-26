@@ -1,0 +1,95 @@
+.profile-box {
+    background-color: rgba(0, 0, 0, 0.6);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto;
+    text-align: center;
+    color: white;
+}
+
+.character-selection {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+.character-dropdown {
+    width: 80%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    text-align: center;
+}
+
+.add-character-button {
+    padding: 8px 16px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    width: 80%;
+}
+
+.add-character-button:hover {
+    background-color: #218838;
+}
+
+.add-character-button:disabled {
+    background-color: #6c757d;
+    cursor: not-allowed;
+}
+
+.main-characters-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 80%;
+}
+
+.main-characters-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+    margin-bottom: 10px;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.remove-character-button {
+    padding: 4px 8px;
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    min-width: 70px;
+}
+
+.remove-character-button:hover {
+    background-color: #c82333;
+}
+
+.error-message {
+    color: #dc3545;
+    margin: 10px 0;
+    font-size: 14px;
+}
+
+.success-message {
+    color: #28a745;
+    margin: 10px 0;
+    font-size: 14px;
+}

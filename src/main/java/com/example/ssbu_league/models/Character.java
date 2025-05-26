@@ -1,5 +1,8 @@
 package com.example.ssbu_league.models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+@JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum Character {
     MARIO("Mario", "Mario"),
     DONKEY_KONG("Donkey Kong", "DK"),
@@ -102,5 +105,9 @@ public enum Character {
 
     public String getShortName() {
         return shortName;
+    }
+
+    public String getName() {
+        return name();
     }
 }

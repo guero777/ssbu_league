@@ -11,12 +11,14 @@ const AdminPanel = () => {
     return (
         <div className="admin-panel-container">
             <div className="admin-panel-header">
-                <button className={"back-button"} onClick={() => navigate('/dashboard')}>
+                <button className={"back-button"} onClick={() => navigate('/user/dashboard')}>
                     Back
                 </button>
             </div>
-            <UserTable />
+            <div className="admin-panel-content">
+                <UserTable />
             </div>
+        </div>
     );
 };
 

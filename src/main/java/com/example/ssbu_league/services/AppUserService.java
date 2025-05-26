@@ -82,12 +82,12 @@ public class AppUserService implements UserDetailsService {
             System.out.println("User not found for username: " + username);
             return null;
         }
-        return user.role().name();
+        return user.getRole().name();
     }
 
     // Check if the user is an admin
     public boolean isAdmin(AppUser appUser) {
-        return appUser.role() == AppUser.Role.ADMIN;
+        return appUser.getRole() == AppUser.Role.ADMIN;
     }
 
     // Toggles Admin/User role
@@ -110,12 +110,26 @@ public class AppUserService implements UserDetailsService {
     public String getGamerTag(String username) {
         AppUser user = appUserRepository.findByUsername(username);
         if (user != null) {
-            return user.gamerTag();
+            return user.getGamerTag();
         }
         return null;
     }
     
     // Update user's gamertag
+    public void updateUsername(String currentUsername, String newUsername) {
+        if (appUserRepository.findByUsername(newUsername) != null) {
+            throw new RuntimeException("Username already exists");
+        }
+        
+        AppUser user = appUserRepository.findByUsername(currentUsername);
+        if (user == null) {
+            throw new RuntimeException("Current user not found");
+        }
+        
+        user.setUsername(newUsername);
+        appUserRepository.save(user);
+    }
+
     public void updateGamerTag(String username, String gamerTag) {
         AppUser user = appUserRepository.findByUsername(username);
         if (user != null) {

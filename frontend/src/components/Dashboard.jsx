@@ -6,11 +6,12 @@ import { useAuth } from './AuthContext.jsx';
 import './Dashboard.css';
 
 const Dashboard = () => {
-    const { userRole, isLoading } = useAuth();
+    const { userRole, username, isLoading } = useAuth();
     const navigate = useNavigate();
 
     return (
         <div className="dashboard-container">
+            <h3 className='welcome-message'>Welcome, {username} ({userRole})</h3>
             <div className="dashboard-navigation">
                 <button
                     onClick={() => navigate('/user/profile')}
@@ -18,8 +19,6 @@ const Dashboard = () => {
                 >
                     Profile Settings
                 </button>
-                <h3>{userRole}</h3>
-
                 {userRole === 'ADMIN' && (
                     <button
                         onClick={() => navigate('/admin/panel')}

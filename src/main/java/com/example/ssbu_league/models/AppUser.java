@@ -1,5 +1,6 @@
 package com.example.ssbu_league.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -24,6 +25,7 @@ public class AppUser {
     private String username;
 
     @Column(nullable = false)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
     private String gamerTag;
@@ -71,12 +73,11 @@ public class AppUser {
         else role = Role.ADMIN;
     }
 
-    public int id() {
+    public int getId() {
         return id;
     }
 
-
-    public String username() {
+    public String getUsername() {
         return username;
     }
 
@@ -84,7 +85,7 @@ public class AppUser {
         this.username = username;
     }
 
-    public String password() {
+    public String getPassword() {
         return password;
     }
 
@@ -92,7 +93,7 @@ public class AppUser {
         this.password = password;
     }
 
-    public String gamerTag() {
+    public String getGamerTag() {
         return gamerTag;
     }
 
@@ -100,7 +101,7 @@ public class AppUser {
         this.gamerTag = gamerTag;
     }
 
-    public LocalDateTime createdAt() {
+    public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
@@ -108,7 +109,7 @@ public class AppUser {
         this.createdAt = createdAt;
     }
 
-    public int score() {
+    public int getScore() {
         return score;
     }
 
@@ -116,7 +117,7 @@ public class AppUser {
         this.score = score;
     }
 
-    public Role role() {
+    public Role getRole() {
         return role;
     }
 
