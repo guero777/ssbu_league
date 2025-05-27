@@ -66,7 +66,7 @@ public class SecurityConfig {
                 .requestMatchers("/", "/login", "/register", "/error", "/index.html").permitAll()
                 .requestMatchers("/assets/**", "/static/**", "/images/**").permitAll()
                 .requestMatchers("/favicon.ico").permitAll()
-                .requestMatchers("/api/login", "/api/register", "/api/userRankings").permitAll()
+                .requestMatchers("/api/login", "/api/register", "/api/userRankings", "/api/user/get-info").permitAll()
                 .requestMatchers("/api/user/**").hasAnyRole("USER", "ADMIN")
                 .requestMatchers("/api/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
