@@ -135,7 +135,7 @@ public class UserController {
         return ResponseEntity.status(401).body("Not authenticated");
     }
 
-    @PostMapping("/user/change-gamertag")
+    @PostMapping("/user/edit-gamertag")
     public ResponseEntity<?> changeGamerTag(@RequestBody Map<String, String> request) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && authentication.isAuthenticated() && !authentication.getName().equals("anonymousUser")) {

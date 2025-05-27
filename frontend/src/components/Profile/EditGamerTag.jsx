@@ -57,7 +57,7 @@ const EditGamerTag = () => {
     };
 
     const saveGamerTag = () => {
-        fetch(`${API_BASE_URL}/api/user/update-gamertag`, {
+        fetch(`${API_BASE_URL}/api/user/edit-gamertag`, {
             method: 'POST',
             credentials: 'include',
             headers: {
