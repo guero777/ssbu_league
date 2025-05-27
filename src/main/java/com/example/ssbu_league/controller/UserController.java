@@ -21,7 +21,10 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api")
-@CrossOrigin(origins = {"http://localhost:5173", "http://173.212.222.16:8080"}) // Allow both local and VPS
+@CrossOrigin(origins = {"http://localhost:5173", "http://localhost:8080", 
+    "http://173.212.222.16", "http://173.212.222.16:8080",
+    "https://173.212.222.16", "https://173.212.222.16:8080"}, 
+    allowCredentials = "true") // Allow both local and VPS
 public class UserController {
 
     @Autowired

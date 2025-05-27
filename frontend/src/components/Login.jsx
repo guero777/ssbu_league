@@ -17,30 +17,30 @@ const Login = () => {
     const { refreshAuthInfo } = useAuth();
 
 
-    const handleLogin = async (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const formData = new URLSearchParams();
-            formData.append("username", username);
-            formData.append("password", password);
+            const response = await axios.post(`${API_BASE_URL}/api/login`, 
+                `username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`,
+                {
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    withCredentials: true
+                }
+            );
 
-            await axios.post(`${API_BASE_URL}/api/login`, formData, {
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                    'Accept': 'application/json'
-                },
-                withCredentials: true
-            });
-
-            // Refresh auth info after successful login
-            await refreshAuthInfo();
-            
-            // Redirect to the page they tried to visit or dashboard as default
-            const from = location.state?.from?.pathname || '/user/dashboard';
-            navigate(from);
+            if (response.status === 200) {
+                // Login successful
+                await refreshAuthInfo();
+                const from = location.state?.from?.pathname || '/user/dashboard';
+                navigate(from, { replace: true });
+                return;
+            }
+            setError('Invalid credentials');
         } catch (error) {
             console.error('Login error:', error);
-            setError(error.response?.data || "Invalid username or password");
+            setError(error.response?.data?.error || 'Invalid credentials');
         }
     };
 
@@ -48,7 +48,7 @@ return (
     <>
         <div className="login-container">
             
-            <form onSubmit={handleLogin}>
+            <form onSubmit={handleSubmit}>
                 <div className={"username-field"}>
                     <input
                         type="text"

@@ -39,7 +39,14 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173", "http://173.212.222.16:8080"));
+        configuration.setAllowedOrigins(Arrays.asList(
+            "http://localhost:5173",     // Dev frontend
+            "http://localhost:8080",      // Dev backend
+            "http://173.212.222.16",     // VPS HTTP
+            "http://173.212.222.16:8080", // VPS HTTP with port
+            "https://173.212.222.16",     // VPS HTTPS
+            "https://173.212.222.16:8080" // VPS HTTPS with port
+        ));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("Content-Type", "Authorization", "X-Requested-With"));
         configuration.setExposedHeaders(Arrays.asList("Set-Cookie"));
@@ -56,57 +63,44 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/", "/login", "/register", "/index.html").permitAll()
-                .requestMatchers("/static/**").permitAll()
-                .requestMatchers("/images/**").permitAll()
-                .requestMatchers("/assets/**").permitAll()
-                .requestMatchers("/*.js").permitAll()
-                .requestMatchers("/*.html").permitAll()
-                .requestMatchers("/*.css").permitAll()
-                .requestMatchers("/*.png").permitAll()
-                .requestMatchers("/*.svg").permitAll()
-                .requestMatchers("/*.jpg").permitAll()
-                .requestMatchers("/*.ico").permitAll()
-                .requestMatchers("/user/**").permitAll()
-                .requestMatchers("/admin/**").hasRole("ADMIN")
-                .requestMatchers("/api/login", "/api/register", "/api/userRankings", "/api/user/get-role").permitAll()
+                .requestMatchers("/", "/login", "/register", "/error", "/index.html").permitAll()
+                .requestMatchers("/assets/**", "/static/**", "/images/**").permitAll()
+                .requestMatchers("/favicon.ico").permitAll()
+                .requestMatchers("/api/login", "/api/register", "/api/userRankings").permitAll()
                 .requestMatchers("/api/user/**").hasAnyRole("USER", "ADMIN")
                 .requestMatchers("/api/admin/**").hasRole("ADMIN")
-                .requestMatchers("/api/**").authenticated()
+                .anyRequest().authenticated()
             )
             .formLogin(form -> form
                 .loginProcessingUrl("/api/login")
                 .loginPage("/login")
                 .successHandler((request, response, authentication) -> {
                     response.setStatus(HttpServletResponse.SC_OK);
+                    response.setContentType("application/json");
+                    response.getWriter().write("{\"status\":\"success\"}");
                 })
                 .failureHandler((request, response, exception) -> {
                     response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                    response.setContentType("application/json");
+                    response.getWriter().write("{\"status\":\"error\",\"message\":\"Invalid credentials\"}");
                 })
+            )
+            .sessionManagement(session -> session
+                .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+                .sessionFixation().migrateSession()
+                .maximumSessions(1)
             )
             .logout(logout -> logout
                 .logoutUrl("/api/logout")
-                .logoutSuccessHandler((request, response, authentication) -> {
-                    response.setStatus(HttpServletResponse.SC_OK);
-                })
-            )
-            .sessionManagement(session -> session
-                .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
-            )
-            .sessionManagement(session -> session
-                .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
-                .maximumSessions(1)
-                .expiredUrl("/login?expired")
-            )
-            .rememberMe(remember -> remember
-                .key("uniqueAndSecureKey123")
-                .tokenValiditySeconds(86400)
-            )
-            .logout(logout -> logout
                 .logoutRequestMatcher(new AntPathRequestMatcher("/api/logout", "POST"))
                 .logoutSuccessHandler((request, response, authentication) -> {
-                    response.setStatus(200);
+                    response.setStatus(HttpServletResponse.SC_OK);
+                    response.setContentType("application/json");
+                    response.getWriter().write("{\"status\":\"success\"}");
                 })
+                .clearAuthentication(true)
+                .invalidateHttpSession(true)
+                .deleteCookies("JSESSIONID")
                 .permitAll()
             );
 
