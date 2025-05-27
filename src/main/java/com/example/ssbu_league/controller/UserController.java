@@ -3,6 +3,7 @@ package com.example.ssbu_league.controller;
 import com.example.ssbu_league.dto.UserRegistrationDTO;
 import com.example.ssbu_league.dto.UserDTOMapper;
 import com.example.ssbu_league.dto.UserScoreDTO;
+import com.example.ssbu_league.dto.UserEditDTO;
 import com.example.ssbu_league.models.AppUser;
 import com.example.ssbu_league.models.Character;
 import com.example.ssbu_league.services.AppUserService;
@@ -25,6 +26,22 @@ public class UserController {
 
     @Autowired
     private AppUserService appUserService;
+
+    @PutMapping("/admin/edit-user")
+    public ResponseEntity<?> editUser(@RequestBody UserEditDTO userEditDTO) {
+        try {
+            // Only check for username conflict if username is being changed
+            if (!userEditDTO.getNewUsername().equals(userEditDTO.getOriginalUsername()) &&
+                appUserService.loadUserByUsername(userEditDTO.getNewUsername()) != null) {
+                return ResponseEntity.badRequest().body("Username already exists");
+            }
+
+            appUserService.updateUser(userEditDTO);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error editing user: " + e.getMessage());
+        }
+    }
 
     @DeleteMapping("/admin/delete-user/{username}")
     public ResponseEntity<?> deleteUser(@PathVariable String username) {
@@ -136,7 +153,7 @@ public class UserController {
     }
 
     @PostMapping("/user/edit-gamertag")
-    public ResponseEntity<?> changeGamerTag(@RequestBody Map<String, String> request) {
+    public ResponseEntity<?> editGamerTag(@RequestBody Map<String, String> request) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && authentication.isAuthenticated() && !authentication.getName().equals("anonymousUser")) {
             String username = authentication.getName();

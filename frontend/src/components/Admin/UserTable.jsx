@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import './UserTable.css';
 import axios from 'axios';
-import { API_BASE_URL } from '../config';
+import { API_BASE_URL } from '../../config.js';
 import UserEdit from './UserEdit.jsx';
 
 const UserTable = () => {
@@ -49,7 +49,7 @@ const handleDelete = async (username) => {
   try {
     // note: use axios.delete and put the username into the URL
     await axios.delete(
-      `${API_BASE_URL}/api/delete-user/${encodeURIComponent(username)}`,
+      `${API_BASE_URL}/api/admin/delete-user/${encodeURIComponent(username)}`,
       { withCredentials: true }
     );
     fetchUsers();

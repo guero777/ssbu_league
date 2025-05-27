@@ -2,18 +2,21 @@
 import React, { useState } from 'react';
 import './UserEdit.css';
 import axios from 'axios';
-import { API_BASE_URL } from '../config';
+import { API_BASE_URL } from '../../config';
 
 const EditUser = ({ user, onClose, onUserUpdated }) => {
     const [editedUser, setEditedUser] = useState({
-        ...user,
-        password: '' // Empty password field by default
+        originalUsername: user.username,
+        newUsername: user.username,
+        newPassword: '',
+        newRole: user.role,
+        newGamerTag: user.gamerTag || ''
     });
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await axios.put(`${API_BASE_URL}/api/users/${user.id}`, editedUser, {
+            await axios.put(`${API_BASE_URL}/api/admin/edit-user`, editedUser, {
                 withCredentials: true
             });
             onUserUpdated(); // Refresh the table data
@@ -32,31 +35,31 @@ const EditUser = ({ user, onClose, onUserUpdated }) => {
                         <label>Username:</label>
                         <input
                             type="text"
-                            value={editedUser.username}
-                            onChange={(e) => setEditedUser({...editedUser, username: e.target.value})}
+                            value={editedUser.newUsername}
+                            onChange={(e) => setEditedUser({...editedUser, newUsername: e.target.value})}
                         />
                     </div>
                     <div className="form-group">
                         <label>Gamer Tag:</label>
                         <input
                             type="text"
-                            value={editedUser.gamerTag || ''}
-                            onChange={(e) => setEditedUser({...editedUser, gamerTag: e.target.value})}
+                            value={editedUser.newGamerTag}
+                            onChange={(e) => setEditedUser({...editedUser, newGamerTag: e.target.value})}
                         />
                     </div>
                     <div className="form-group">
                         <label>New Password:</label>
                         <input
                             type="password"
-                            value={editedUser.password}
-                            onChange={(e) => setEditedUser({...editedUser, password: e.target.value})}
+                            value={editedUser.newPassword}
+                            onChange={(e) => setEditedUser({...editedUser, newPassword: e.target.value})}
                         />
                     </div>
                     <div className="form-group">
                         <label>Role:</label>
                         <select
-                            value={editedUser.role}
-                            onChange={(e) => setEditedUser({...editedUser, role: e.target.value})}
+                            value={editedUser.newRole}
+                            onChange={(e) => setEditedUser({...editedUser, newRole: e.target.value})}
                         >
                             <option value="USER">User</option>
                             <option value="ADMIN">Admin</option>

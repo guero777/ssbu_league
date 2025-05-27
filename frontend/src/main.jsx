@@ -8,7 +8,7 @@ import Login from "./components/Login.jsx";
 import Register from "./components/Register.jsx";
 import Dashboard from "./components/Dashboard.jsx";
 import Profile from "./components/Profile/Profile.jsx";
-import AdminPanel from "./components/AdminPanel.jsx";
+import AdminPanel from "./components/Admin/AdminPanel.jsx";
 import { AuthProvider } from './components/AuthContext.jsx';
 import PrivateRoute from './components/PrivateRoute';
 

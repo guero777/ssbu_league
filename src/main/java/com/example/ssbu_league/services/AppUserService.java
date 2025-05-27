@@ -1,6 +1,7 @@
 package com.example.ssbu_league.services;
 
 import com.example.ssbu_league.configurations.AppUserPrincipal;
+import com.example.ssbu_league.dto.UserEditDTO;
 import com.example.ssbu_league.models.AppUser;
 import com.example.ssbu_league.models.Character;
 import com.example.ssbu_league.repositories.AppUserRepository;
@@ -102,6 +103,35 @@ public class AppUserService implements UserDetailsService {
         }
     }
 
+    public void updateUser(UserEditDTO userEditDTO) {
+        AppUser user = appUserRepository.findByUsername(userEditDTO.getOriginalUsername());
+        if (user != null) {
+            // Update username if provided
+            if (userEditDTO.getNewUsername() != null && !userEditDTO.getNewUsername().isEmpty()) {
+                user.setUsername(userEditDTO.getNewUsername());
+            }
+            
+            // Update password if provided
+            if (userEditDTO.getNewPassword() != null && !userEditDTO.getNewPassword().isEmpty()) {
+                user.setPassword(passwordEncoder.encode(userEditDTO.getNewPassword()));
+            }
+            
+            // Update role if provided
+            if (userEditDTO.getNewRole() != null && !userEditDTO.getNewRole().isEmpty()) {
+                user.setRole(AppUser.Role.valueOf(userEditDTO.getNewRole()));
+            }
+            
+            // Update gamerTag if provided
+            if (userEditDTO.getNewGamerTag() != null) {
+                user.setGamerTag(userEditDTO.getNewGamerTag());
+            }
+            
+            appUserRepository.save(user);
+        } else {
+            throw new UsernameNotFoundException("User not found: " + userEditDTO.getOriginalUsername());
+        }
+    }
+
     public List<AppUser> getAllUsers() {
         return appUserRepository.findAll(); // Fetch all users
     }
@@ -154,5 +184,9 @@ public class AppUserService implements UserDetailsService {
             user.setMainCharacters(characters);
             appUserRepository.save(user);
         }
+    }
+
+    public void updateUser(AppUser user) {
+        appUserRepository.save(user);
     }
 }

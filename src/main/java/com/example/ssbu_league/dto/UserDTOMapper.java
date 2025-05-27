@@ -7,22 +7,27 @@ import org.springframework.stereotype.Component;
 public class UserDTOMapper {
 
     public UserScoreDTO toUserScoreDTO(AppUser appUser) {
+
         UserScoreDTO userScoreDTO = new UserScoreDTO();
+        
         userScoreDTO.setGamerTag(appUser.getGamerTag());
         userScoreDTO.setScore(appUser.getScore());
         userScoreDTO.setMainCharacters(appUser.getMainCharacters());
+        
         return userScoreDTO;
     }
 
-    /* I decided to ditch the UserDTO for the moment being to simplify user data changes by just using the actual
-     * AppUser objects in transfer
 
-    public AppUserDTO toAppUserDTO(AppUser appUser) {
-        return new AppUserDTO(
-                appUser.getUsername(),
-                appUser.getPassword(),
-                appUser.getGamerTag(),
-                appUser.getRole()
-        );
-    } */
+    public UserEditDTO toUserEditDTO(AppUser appUser) {
+        
+        UserEditDTO userEditDTO = new UserEditDTO();
+        
+        userEditDTO.setOriginalUsername(appUser.getUsername());
+        userEditDTO.setNewUsername(appUser.getUsername());
+        userEditDTO.setNewPassword(appUser.getPassword());
+        userEditDTO.setNewRole(appUser.getRole().name());
+        userEditDTO.setNewGamerTag(appUser.getGamerTag());
+
+        return userEditDTO;
+    }
 }
