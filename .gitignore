@@ -27,8 +27,6 @@ target/
 
 ### Build Configuration ###
 compose.yaml
-docker-compose.yaml
-docker-compose.yml
 /frontend/.vite/
 /frontend/vite.config.js.timestamp*
 build/
