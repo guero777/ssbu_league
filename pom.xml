@@ -78,6 +78,7 @@
 		</dependency>
 	</dependencies>
 	<build>
+		<finalName>ssbu-league</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
