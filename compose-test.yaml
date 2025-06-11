@@ -3,14 +3,39 @@ services:
     image: 'postgres:15-alpine'
     container_name: smash-scoreboard-test-db
     environment:
-    - POSTGRES_DB=${POSTGRES_TEST_DB}
-    - POSTGRES_USER=${POSTGRES_TEST_USER}
-    - POSTGRES_PASSWORD=${POSTGRES_TEST_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_TEST_DB}
+      POSTGRES_USER: ${POSTGRES_TEST_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_TEST_PASSWORD}
     ports:
       - '5433:5432'
     volumes:
-      - postgres_test_data:/var/lib/postgresql/data
-    restart: unless-stopped
+      - type: volume
+        source: postgres_test_data
+        target: /var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_TEST_USER} -d ${POSTGRES_TEST_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: on-failure
+
+  webapp:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: smash-scoreboard-webapp-test
+    environment:
+      SPRING_PROFILES_ACTIVE: test
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-test:5432/${POSTGRES_TEST_DB}
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_TEST_USER}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_TEST_PASSWORD}
+    ports:
+      - '8080:8080'
+    depends_on:
+      postgres-test:
+        condition: service_healthy
+    restart: on-failure
 
 volumes:
   postgres_test_data:
+    name: ssbu_league_postgres_test_data
