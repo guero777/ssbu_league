@@ -1,4 +1,4 @@
-package com.example.ssbu_league.configurations;
+package com.example.ssbu_league.config;
 
 import com.example.ssbu_league.models.AppUser;
 import org.springframework.security.core.GrantedAuthority;

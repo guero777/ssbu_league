@@ -3,8 +3,8 @@ package com.example.ssbu_league.controller;
 import com.example.ssbu_league.dto.UserRegistrationDTO;
 import com.example.ssbu_league.dto.UserDTOMapper;
 import com.example.ssbu_league.dto.UserScoreDTO;
+import com.example.ssbu_league.dto.UserDTO;
 import com.example.ssbu_league.dto.UserEditDTO;
-import com.example.ssbu_league.models.AppUser;
 import com.example.ssbu_league.models.Character;
 import com.example.ssbu_league.services.AppUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -57,15 +58,17 @@ public class UserController {
     }
 
     @GetMapping("/admin/get-user-table")
-    public List<AppUser> getUserTable() {
+    @Transactional(readOnly = true)
+    public List<UserDTO> getUserTable() {
         return appUserService.getAllUsers();
     }
 
     @GetMapping("/userRankings")
+    @Transactional(readOnly = true)
     public List<UserScoreDTO> getAllUserScores() {
+        List<UserDTO> users = appUserService.getAllUsers();
         UserDTOMapper mapper = new UserDTOMapper();
-        return appUserService.getAllUsers()
-                .stream()
+        return users.stream()
                 .map(mapper::toUserScoreDTO)
                 .collect(Collectors.toList());
     }
@@ -192,6 +195,7 @@ public class UserController {
     }
     
     @GetMapping("/user/main-characters")
+    @Transactional(readOnly = true)
     public ResponseEntity<?> getUserMainCharacters() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && authentication.isAuthenticated() && !authentication.getName().equals("anonymousUser")) {
@@ -214,6 +218,7 @@ public class UserController {
     }
     
     @PostMapping("/user/update-main-characters")
+    @Transactional
     public ResponseEntity<?> updateMainCharacters(@RequestBody List<String> characterNames) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && authentication.isAuthenticated() && !authentication.getName().equals("anonymousUser")) {

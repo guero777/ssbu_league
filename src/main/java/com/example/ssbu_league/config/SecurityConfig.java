@@ -1,4 +1,4 @@
-package com.example.ssbu_league.configurations;
+package com.example.ssbu_league.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -48,9 +48,10 @@ public class SecurityConfig {
             "https://173.212.222.16:8080" // VPS HTTPS with port
         ));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(Arrays.asList("Content-Type", "Authorization", "X-Requested-With"));
-        configuration.setExposedHeaders(Arrays.asList("Set-Cookie"));
+        configuration.setAllowedHeaders(Arrays.asList("Content-Type", "Authorization", "X-Requested-With", "X-XSRF-TOKEN"));
+        configuration.setExposedHeaders(Arrays.asList("Set-Cookie", "X-XSRF-TOKEN"));
         configuration.setAllowCredentials(true);
+        configuration.setMaxAge(3600L);
         
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
@@ -66,7 +67,7 @@ public class SecurityConfig {
                 .requestMatchers("/", "/login", "/register", "/error", "/index.html").permitAll()
                 .requestMatchers("/assets/**", "/static/**", "/images/**").permitAll()
                 .requestMatchers("/favicon.ico").permitAll()
-                .requestMatchers("/api/login", "/api/register", "/api/userRankings", "/api/user/get-info").permitAll()
+                .requestMatchers("/api/login", "/api/register", "/api/userRankings").permitAll()
                 .requestMatchers("/api/user/**").hasAnyRole("USER", "ADMIN")
                 .requestMatchers("/api/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
@@ -86,9 +87,10 @@ public class SecurityConfig {
                 })
             )
             .sessionManagement(session -> session
-                .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+                .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
                 .sessionFixation().migrateSession()
                 .maximumSessions(1)
+                .maxSessionsPreventsLogin(true)
             )
             .logout(logout -> logout
                 .logoutUrl("/api/logout")

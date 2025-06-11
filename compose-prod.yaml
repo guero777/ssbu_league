@@ -1,0 +1,33 @@
+services:
+  postgres-prod:
+    image: 'postgres:15-alpine'
+    container_name: smash-scoreboard-prod-db
+    environment:
+    - POSTGRES_DB=${POSTGRES_PROD_DB}
+    - POSTGRES_USER=${POSTGRES_PROD_USER}
+    - POSTGRES_PASSWORD=${POSTGRES_PROD_PASSWORD}
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres_prod_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_PROD_USER} -d ${POSTGRES_PROD_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: smash-scoreboard-pgadmin
+    environment:
+    - PGADMIN_DEFAULT_EMAIL=${PGADMIN_DEFAULT_EMAIL}
+    - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_DEFAULT_PASSWORD}
+    ports:
+      - '5050:80'
+    depends_on:
+      - postgres-prod
+    restart: unless-stopped
+
+volumes:
+  postgres_prod_data:

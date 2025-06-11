@@ -1,6 +1,6 @@
 package com.example.ssbu_league.services;
 
-import com.example.ssbu_league.configurations.AppUserPrincipal;
+import com.example.ssbu_league.config.AppUserPrincipal;
 import com.example.ssbu_league.dto.UserEditDTO;
 import com.example.ssbu_league.models.AppUser;
 import com.example.ssbu_league.models.Character;
@@ -15,6 +15,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import com.example.ssbu_league.dto.UserDTO;
+import org.springframework.transaction.annotation.Transactional;
 
 
 @Service
@@ -103,6 +106,17 @@ public class AppUserService implements UserDetailsService {
         }
     }
 
+    /**
+     * Get all users from the database
+     * @return List of UserDTO objects
+     */
+    @Transactional(readOnly = true)
+    public List<UserDTO> getAllUsers() {
+        return appUserRepository.findAll().stream()
+                .map(UserDTO::new)
+                .collect(Collectors.toList());
+    }
+
     public void updateUser(UserEditDTO userEditDTO) {
         AppUser user = appUserRepository.findByUsername(userEditDTO.getOriginalUsername());
         if (user != null) {
@@ -130,10 +144,6 @@ public class AppUserService implements UserDetailsService {
         } else {
             throw new UsernameNotFoundException("User not found: " + userEditDTO.getOriginalUsername());
         }
-    }
-
-    public List<AppUser> getAllUsers() {
-        return appUserRepository.findAll(); // Fetch all users
     }
     
     // Get user's gamertag by username
@@ -169,6 +179,7 @@ public class AppUserService implements UserDetailsService {
     }
     
     // Get user's main characters by username
+    @Transactional(readOnly = true)
     public List<Character> getMainCharacters(String username) {
         AppUser user = appUserRepository.findByUsername(username);
         if (user != null) {
