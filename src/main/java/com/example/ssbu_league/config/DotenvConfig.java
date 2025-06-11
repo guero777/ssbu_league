@@ -9,10 +9,14 @@ public class DotenvConfig {
     
     @Bean
     public Dotenv dotenv() {
-        return Dotenv.configure()
-            .directory("/app")  // Docker container path
-            .directory(".")     // Current directory
-            .ignoreIfMissing()  // Don't fail if .env is missing
-            .load();
+        try {
+            return Dotenv.configure()
+                .directory(".")     // Current directory
+                .ignoreIfMissing()  // Don't fail if .env is missing
+                .load();
+        } catch (Exception e) {
+            // Return a no-op implementation if .env file is not found
+            return Dotenv.configure().ignoreIfMissing().load();
+        }
     }
 }
