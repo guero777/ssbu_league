@@ -5,8 +5,9 @@ LABEL authors="johnny"
 # Create app directory
 WORKDIR /app
 
-# Copy the packaged JAR file into the image
+# Copy the packaged JAR file and .env into the image
 COPY target/ssbu-league.jar app.jar
+COPY .env .env
 
 # Expose the port your app runs on
 EXPOSE 8080

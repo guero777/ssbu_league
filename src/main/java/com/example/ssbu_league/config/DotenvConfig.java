@@ -9,6 +9,10 @@ public class DotenvConfig {
     
     @Bean
     public Dotenv dotenv() {
-        return Dotenv.configure().load();
+        return Dotenv.configure()
+            .directory("/app")  // Docker container path
+            .directory(".")     // Current directory
+            .ignoreIfMissing()  // Don't fail if .env is missing
+            .load();
     }
 }
