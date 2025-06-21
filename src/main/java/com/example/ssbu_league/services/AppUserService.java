@@ -34,10 +34,8 @@ public class AppUserService implements UserDetailsService {
     // UserDetailService implementation requires returning a Principal for login and session purpose
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        AppUser appUser = appUserRepository.findByUsername(username);
-        if (appUser == null) {
-            throw new UsernameNotFoundException(username);
-        }
+        AppUser appUser = appUserRepository.findByUsername(username)
+            .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
         return new AppUserPrincipal(appUser);
     }
 
@@ -67,12 +65,12 @@ public class AppUserService implements UserDetailsService {
 
     // Delete user by username and return error message if user not found
     public String deleteByUsername(String username) {
-        AppUser user = appUserRepository.findByUsername(username);
-        if (user != null) {
-            appUserRepository.delete(user);
-            return null; // Indicate success
-        }
-        return "User not found"; // Return error message
+        return appUserRepository.findByUsername(username)
+            .map(user -> {
+                appUserRepository.delete(user);
+                return (String)null; // Indicate success
+            })
+            .orElse("User not found"); // Return error message
     }
 
     // Delete user by id
@@ -81,12 +79,12 @@ public class AppUserService implements UserDetailsService {
     }
 
     public String getRole(String username) {
-        AppUser user = appUserRepository.findByUsername(username);
-        if (user == null) {
-            System.out.println("User not found for username: " + username);
-            return null;
-        }
-        return user.getRole().name();
+        return appUserRepository.findByUsername(username)
+            .map(user -> user.getRole().name())
+            .orElseGet(() -> {
+                System.out.println("User not found for username: " + username);
+                return null;
+            });
     }
 
     // Check if the user is an admin
@@ -96,14 +94,11 @@ public class AppUserService implements UserDetailsService {
 
     // Toggles Admin/User role
     public void changeUserRole(String username) {
-        // Retrieve the user by their username
-        AppUser user = appUserRepository.findByUsername(username);
-        if (user != null) {
-            // Change the user's role to ADMIN
-            user.switchRole();
-            // Save the updated user back into the database
-            appUserRepository.save(user);
-        }
+        appUserRepository.findByUsername(username)
+            .ifPresent(user -> {
+                user.switchRole();
+                appUserRepository.save(user);
+            });
     }
 
     /**
@@ -118,83 +113,75 @@ public class AppUserService implements UserDetailsService {
     }
 
     public void updateUser(UserEditDTO userEditDTO) {
-        AppUser user = appUserRepository.findByUsername(userEditDTO.getOriginalUsername());
-        if (user != null) {
-            // Update username if provided
-            if (userEditDTO.getNewUsername() != null && !userEditDTO.getNewUsername().isEmpty()) {
-                user.setUsername(userEditDTO.getNewUsername());
-            }
-            
-            // Update password if provided
-            if (userEditDTO.getNewPassword() != null && !userEditDTO.getNewPassword().isEmpty()) {
-                user.setPassword(passwordEncoder.encode(userEditDTO.getNewPassword()));
-            }
-            
-            // Update role if provided
-            if (userEditDTO.getNewRole() != null && !userEditDTO.getNewRole().isEmpty()) {
-                user.setRole(AppUser.Role.valueOf(userEditDTO.getNewRole()));
-            }
-            
-            // Update gamerTag if provided
-            if (userEditDTO.getNewGamerTag() != null) {
-                user.setGamerTag(userEditDTO.getNewGamerTag());
-            }
-            
-            appUserRepository.save(user);
-        } else {
-            throw new UsernameNotFoundException("User not found: " + userEditDTO.getOriginalUsername());
+        AppUser user = appUserRepository.findByUsername(userEditDTO.getOriginalUsername())
+            .orElseThrow(() -> new UsernameNotFoundException("User not found: " + userEditDTO.getOriginalUsername()));
+
+        // Update username if provided
+        if (userEditDTO.getNewUsername() != null && !userEditDTO.getNewUsername().isEmpty()) {
+            user.setUsername(userEditDTO.getNewUsername());
         }
+        
+        // Update password if provided
+        if (userEditDTO.getNewPassword() != null && !userEditDTO.getNewPassword().isEmpty()) {
+            user.setPassword(passwordEncoder.encode(userEditDTO.getNewPassword()));
+        }
+        
+        // Update role if provided
+        if (userEditDTO.getNewRole() != null && !userEditDTO.getNewRole().isEmpty()) {
+            user.setRole(AppUser.Role.valueOf(userEditDTO.getNewRole()));
+        }
+        
+        // Update gamerTag if provided
+        if (userEditDTO.getNewGamerTag() != null) {
+            user.setGamerTag(userEditDTO.getNewGamerTag());
+        }
+        
+        appUserRepository.save(user);
     }
     
     // Get user's gamertag by username
     public String getGamerTag(String username) {
-        AppUser user = appUserRepository.findByUsername(username);
-        if (user != null) {
-            return user.getGamerTag();
-        }
-        return null;
+        return appUserRepository.findByUsername(username)
+            .map(AppUser::getGamerTag)
+            .orElse(null);
     }
     
     // Update user's gamertag
     public void updateUsername(String currentUsername, String newUsername) {
-        if (appUserRepository.findByUsername(newUsername) != null) {
+        if (appUserRepository.findByUsername(newUsername).isPresent()) {
             throw new RuntimeException("Username already exists");
         }
         
-        AppUser user = appUserRepository.findByUsername(currentUsername);
-        if (user == null) {
-            throw new RuntimeException("Current user not found");
-        }
+        AppUser user = appUserRepository.findByUsername(currentUsername)
+            .orElseThrow(() -> new RuntimeException("Current user not found"));
         
         user.setUsername(newUsername);
         appUserRepository.save(user);
     }
 
     public void updateGamerTag(String username, String gamerTag) {
-        AppUser user = appUserRepository.findByUsername(username);
-        if (user != null) {
-            user.setGamerTag(gamerTag);
-            appUserRepository.save(user);
-        }
+        appUserRepository.findByUsername(username)
+            .ifPresent(user -> {
+                user.setGamerTag(gamerTag);
+                appUserRepository.save(user);
+            });
     }
     
     // Get user's main characters by username
     @Transactional(readOnly = true)
     public List<Character> getMainCharacters(String username) {
-        AppUser user = appUserRepository.findByUsername(username);
-        if (user != null) {
-            return user.getMainCharacters();
-        }
-        return new ArrayList<>();
+        return appUserRepository.findByUsername(username)
+            .map(AppUser::getMainCharacters)
+            .orElse(new ArrayList<>());
     }
     
     // Update user's main characters
     public void updateMainCharacters(String username, List<Character> characters) {
-        AppUser user = appUserRepository.findByUsername(username);
-        if (user != null) {
-            user.setMainCharacters(characters);
-            appUserRepository.save(user);
-        }
+        appUserRepository.findByUsername(username)
+            .ifPresent(user -> {
+                user.setMainCharacters(characters);
+                appUserRepository.save(user);
+            });
     }
 
     public void updateUser(AppUser user) {

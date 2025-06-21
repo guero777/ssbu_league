@@ -24,23 +24,17 @@ public class DataInitializer implements CommandLineRunner {
     @Autowired
     private Dotenv dotenv;
     
+    
     @Override
     public void run(String... args) {
-        // Check if admin user exists, if not create one
-        if (!appUserRepository.existsByUsername("admin")) {
-            String adminPassword = dotenv.get("ADMIN_PASSWORD");
-            if (adminPassword == null || adminPassword.isEmpty()) {
-                logger.error("ADMIN_PASSWORD not found in .env file");
-                return;
-            }
-            
-            logger.info("Creating admin user");
-            AppUser adminUser = new AppUser("admin", passwordEncoder.encode(adminPassword));
-            adminUser.setRole(AppUser.Role.ADMIN);
-            appUserRepository.save(adminUser);
-            logger.info("Admin user created successfully");
-        } else {
-            logger.info("Admin user already exists");
+        AppUser admin = appUserRepository.findByUsername("admin").orElse(null);
+        if (admin == null || admin.getRole() != AppUser.Role.ADMIN) {
+            String password = dotenv.get("ADMIN_PASSWORD");
+            logger.info("Creating admin user with password: {}", password);
+            admin = new AppUser("admin", passwordEncoder.encode(password));
+            admin.setRole(AppUser.Role.ADMIN);
+            appUserRepository.save(admin);
         }
     }
+
 }
