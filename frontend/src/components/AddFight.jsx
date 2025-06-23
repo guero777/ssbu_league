@@ -79,7 +79,7 @@ const AddFight = () => {
 
   return (
     <div className="bg-black/60 backdrop-blur-sm rounded-xl shadow-2xl p-6 border border-red-900/50">
-      <h2 className="text-3xl font-bold mb-6 text-center text-white">Submit Fight Result</h2>
+      <h2 className="text-3xl font-bold mb-8 text-center text-white">Submit Fight Result</h2>
       
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -88,7 +88,7 @@ const AddFight = () => {
             <label className="block text-2xl font-medium text-white/80 mb-2">
               Player 1
             </label>
-            <div className="text-xl text-white/60 px-6 py-4 bg-white/5 rounded">
+            <div className="text-2xl text-center text-white/60 px-6 py-4 bg-white/5 rounded">
               {username}
             </div>
           </div>
@@ -101,7 +101,7 @@ const AddFight = () => {
             <select
               value={selectedOpponent}
               onChange={(e) => setSelectedOpponent(e.target.value)}
-              className="w-full px-6 py-4 text-xl bg-white/5 border border-red-900/30 rounded text-white/60 focus:border-red-500/50 focus:outline-none"
+              className="w-full px-6 py-4 text-2xl text-center bg-white/5 border border-red-900/30 rounded text-white/60 focus:border-red-500/50 focus:outline-none"
             >
               <option value="">Select Opponent</option>
               {opponents.map(opponent => (
@@ -115,13 +115,13 @@ const AddFight = () => {
 
         {/* Game Mode */}
         <div>
-          <label className="block text-2xl font-medium text-white/80 mb-2">
+          <label className="block text-2xl text-center font-medium text-white/80 mb-2">
             Game Mode
           </label>
           <select
             value={gameMode}
             onChange={(e) => setGameMode(e.target.value)}
-            className="w-full px-6 py-4 text-xl bg-white/5 border border-red-900/30 rounded text-white/60 focus:border-red-500/50 focus:outline-none"
+            className="w-full px-6 py-4 text-2xl text-center bg-white/5 border border-red-900/30 rounded text-white/60 focus:border-red-500/50 focus:outline-none"
           >
             <option value="BEST_OF_3">Best of 3</option>
             <option value="BEST_OF_5">Best of 5</option>
@@ -132,7 +132,7 @@ const AddFight = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
             <label className="block text-2xl font-medium text-white/80 mb-2">
-              Your Score
+              Player 1 wins
             </label>
             <select
               value={player1Score}
@@ -145,7 +145,7 @@ const AddFight = () => {
                   setPlayer2Score(0);
                 }
               }}
-              className="w-full px-6 py-4 text-xl bg-white/5 border border-red-900/30 rounded text-white/60 focus:border-red-500/50 focus:outline-none"
+              className="w-full px-6 py-4 text-2xl bg-white/5 border border-red-900/30 rounded text-white/60 focus:border-red-500/50 focus:outline-none"
             >
               {Array.from({length: (gameMode === 'BEST_OF_3' ? 2 : 3) + 1}, (_, i) => (
                 <option key={i} value={i}>{i}</option>
@@ -154,12 +154,12 @@ const AddFight = () => {
           </div>
           <div>
             <label className="block text-2xl font-medium text-white/80 mb-2">
-              Opponent Score
+              Player 2 wins
             </label>
             <select
               value={player2Score}
               onChange={(e) => setPlayer2Score(e.target.value)}
-              className="w-full px-6 py-4 text-xl bg-white/5 border border-red-900/30 rounded text-white/60 focus:border-red-500/50 focus:outline-none"
+              className="w-full px-6 py-4 text-2xl bg-white/5 border border-red-900/30 rounded text-white/60 focus:border-red-500/50 focus:outline-none"
             >
               {Array.from({length: (gameMode === 'BEST_OF_3' ? 2 : 3) - parseInt(player1Score) + 1}, (_, i) => (
                 <option key={i} value={i}>{i}</option>

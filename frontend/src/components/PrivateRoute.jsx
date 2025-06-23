@@ -1,6 +1,5 @@
 import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from './AuthContext';
-import './PrivateRoute.css';
 
 const PrivateRoute = ({ children }) => {
     const { userRole, isLoading } = useAuth();

@@ -1,6 +1,5 @@
 // src/components/EditUser.jsx
 import React, { useState } from 'react';
-import './UserEdit.css';
 import axios from 'axios';
 import { API_BASE_URL } from '../../config';
 
@@ -27,47 +26,62 @@ const EditUser = ({ user, onClose, onUserUpdated }) => {
     };
 
     return (
-        <div className="modal-overlay">
-            <div className="modal-content">
-                <h2>Edit User</h2>
-                <form onSubmit={handleSubmit}>
-                    <div className="form-group">
-                        <label>Username:</label>
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+            <div className="bg-black/90 rounded-lg shadow-xl p-6 w-full max-w-md border border-red-900/50">
+                <h2 className="text-2xl font-bold mb-6 text-white">Edit User</h2>
+                <form onSubmit={handleSubmit} className="space-y-4">
+                    <div className="space-y-2">
+                        <label className="block text-sm font-medium text-gray-200">Username:</label>
                         <input
                             type="text"
                             value={editedUser.newUsername}
                             onChange={(e) => setEditedUser({...editedUser, newUsername: e.target.value})}
+                            className="w-full px-3 py-2 bg-black/50 border border-red-900/50 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-red-500"
                         />
                     </div>
-                    <div className="form-group">
-                        <label>Gamer Tag:</label>
+                    <div className="space-y-2">
+                        <label className="block text-sm font-medium text-gray-200">Gamer Tag:</label>
                         <input
                             type="text"
                             value={editedUser.newGamerTag}
                             onChange={(e) => setEditedUser({...editedUser, newGamerTag: e.target.value})}
+                            className="w-full px-3 py-2 bg-black/50 border border-red-900/50 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-red-500"
                         />
                     </div>
-                    <div className="form-group">
-                        <label>New Password:</label>
+                    <div className="space-y-2">
+                        <label className="block text-sm font-medium text-gray-200">New Password:</label>
                         <input
                             type="password"
                             value={editedUser.newPassword}
                             onChange={(e) => setEditedUser({...editedUser, newPassword: e.target.value})}
+                            className="w-full px-3 py-2 bg-black/50 border border-red-900/50 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-red-500"
                         />
                     </div>
-                    <div className="form-group">
-                        <label>Role:</label>
+                    <div className="space-y-2">
+                        <label className="block text-sm font-medium text-gray-200">Role:</label>
                         <select
                             value={editedUser.newRole}
                             onChange={(e) => setEditedUser({...editedUser, newRole: e.target.value})}
+                            className="w-full px-3 py-2 bg-black/50 border border-red-900/50 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-red-500"
                         >
                             <option value="USER">User</option>
                             <option value="ADMIN">Admin</option>
                         </select>
                     </div>
-                    <div className="modal-buttons">
-                        <button type="submit">Save Changes</button>
-                        <button type="button" onClick={onClose}>Cancel</button>
+                    <div className="flex justify-end space-x-3 mt-6">
+                        <button 
+                            type="button" 
+                            onClick={onClose}
+                            className="px-4 py-2 bg-black/70 text-white rounded-md hover:bg-black/90 transition-colors duration-200"
+                        >
+                            Cancel
+                        </button>
+                        <button 
+                            type="submit"
+                            className="px-4 py-2 bg-red-900/50 text-white/90 rounded-md border border-red-900/50 hover:border-red-900/70 transition-all duration-200 hover:-translate-y-1"
+                        >
+                            Save Changes
+                        </button>
                     </div>
                 </form>
             </div>

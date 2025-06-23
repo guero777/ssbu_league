@@ -1,6 +1,5 @@
 // src/components/UserTable.jsx
 import React, { useState, useEffect } from 'react';
-import './UserTable.css';
 import axios from 'axios';
 import { API_BASE_URL } from '../../config.js';
 import UserEdit from './UserEdit.jsx';
@@ -59,33 +58,33 @@ const handleDelete = async (username) => {
 };
 
     return (
-        <div className="user-table-container">
-            <table className="user-table">
-                <thead>
+        <div className="w-full overflow-x-auto rounded-lg shadow-md border border-red-900/30">
+            <table className="w-full text-sm text-left text-gray-200">
+                <thead className="text-xs uppercase bg-black/60 text-gray-200 border-b border-red-900/30">
                 <tr>
-                    <th>Username</th>
-                    <th>Password</th>
-                    <th>Gamer Tag</th>
-                    <th>Role</th>
-                    <th>Actions</th>
+                    <th className="px-6 py-3">Username</th>
+                    <th className="px-6 py-3">Password</th>
+                    <th className="px-6 py-3">Gamer Tag</th>
+                    <th className="px-6 py-3">Role</th>
+                    <th className="px-6 py-3">Actions</th>
                 </tr>
                 </thead>
-                <tbody>
+                <tbody className="bg-black/40 divide-y divide-red-900/30">
                 {users.map((user) => (
-                    <tr key={user.username}>
-                        <td>{user.username}</td>
-                        <td>****</td>
-                        <td>{user.gamerTag || '-'}</td>
-                        <td>{user.role}</td>
-                        <td>
+                    <tr key={user.username} className="hover:bg-red-950/20">
+                        <td className="px-6 py-4 whitespace-nowrap">{user.username}</td>
+                        <td className="px-6 py-4">****</td>
+                        <td className="px-6 py-4">{user.gamerTag || '-'}</td>
+                        <td className="px-6 py-4">{user.role}</td>
+                        <td className="px-6 py-4 space-x-2">
                             <button
-                                className="edit-button"
+                                className="bg-red-900/50 text-white/90 px-3 py-1 rounded-md text-sm border border-red-900/50 hover:border-red-900/70 transition-all duration-200 hover:-translate-y-1"
                                 onClick={() => handleEditClick(user)}
                             >
                                 Edit
                             </button>
                             <button
-                                className="delete-button"
+                                className="bg-black/60 hover:bg-black/80 text-white px-3 py-1 rounded-md text-sm transition-colors duration-200 border border-red-900/50"
                                 onClick={() => handleDelete(user.username)}
                             >
                                 Delete

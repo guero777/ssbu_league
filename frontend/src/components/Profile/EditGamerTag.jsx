@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { API_BASE_URL } from '../../config';
-import './EditGamerTag.css';
 
 const EditGamerTag = () => {
     const navigate = useNavigate();
@@ -89,28 +88,43 @@ const EditGamerTag = () => {
     };
 
     return (
-        <div className="profile-box">
-            <h2>Your Gamertag</h2>
-            {error && <p className="error-message">{error}</p>}
-            {success && <p className="success-message">{success}</p>}
+        <div className="bg-black/60 rounded-lg p-6 shadow-lg border border-red-900/50">
+            <h2 className="text-3xl text-center font-bold text-white mb-4">Your Gamertag</h2>
+            {error && <p className="text-red-500 mb-4">{error}</p>}
+            {success && <p className="text-green-500 mb-4">{success}</p>}
             
             {isEditing ? (
-                <div className="edit-gamertag">
+                <div className="space-y-4">
                     <input 
                         type="text" 
-                        value={newGamerTag || ''} 
+                        value={newGamerTag || ''}
+                        className="w-full px-3 py-2 text-2xl text-center bg-black/50 border border-red-900/50 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-red-500"
                         onChange={handleGamerTagChange}
-                        placeholder="Enter your gamertag"
                     />
-                    <div className="button-group">
-                        <button onClick={saveGamerTag} className="save-button">Save</button>
-                        <button onClick={cancelEditing} className="cancel-button">Cancel</button>
+                    <div className="flex space-x-3">
+                        <button 
+                            onClick={saveGamerTag}
+                            className="px-4 py-2 bg-red-900/50 text-white rounded-md hover:bg-red-800 transition-colors duration-200"
+                        >
+                            Save
+                        </button>
+                        <button 
+                            onClick={cancelEditing}
+                            className="px-4 py-2 bg-black/70 text-white rounded-md hover:bg-black/90 transition-colors duration-200"
+                        >
+                            Cancel
+                        </button>
                     </div>
                 </div>
             ) : (
-                <div className="display-gamertag">
-                    <p>{gamerTag || 'No tag'}</p>
-                    <button onClick={startEditing} className="edit-button">Edit</button>
+                <div className="flex items-center justify-between">
+                    <p className="text-center text-2xl text-gray-200">{gamerTag || 'No gamertag set'}</p>
+                    <button 
+                        onClick={startEditing}
+                        className="px-8 py-2 bg-red-900/50 text-2xl text-white rounded-md hover:bg-red-900/70 transition-colors duration-200"
+                    >
+                        Edit
+                    </button>
                 </div>
             )}
         </div>
