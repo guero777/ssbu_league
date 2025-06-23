@@ -1,4 +1,4 @@
-package com.example.ssbu_league.repositories;
+package com.example.ssbu_league.repository;
 
 import com.example.ssbu_league.models.AppUser;
 import org.springframework.data.jpa.repository.JpaRepository;

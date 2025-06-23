@@ -1,9 +1,13 @@
 package com.example.ssbu_league.models;
 
 import jakarta.persistence.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 @Entity
+@Data
+@NoArgsConstructor
 public class Fights {
 
     @Id
@@ -25,10 +29,9 @@ public class Fights {
 
     private LocalDateTime timestamp;
 
-    // TODO add constructor
-    public Fights() {
+    // Initialize timestamp in constructor
+    {
         timestamp = LocalDateTime.now();
     }
-
 }
 

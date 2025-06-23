@@ -6,7 +6,8 @@ import com.example.ssbu_league.dto.UserScoreDTO;
 import com.example.ssbu_league.dto.UserDTO;
 import com.example.ssbu_league.dto.UserEditDTO;
 import com.example.ssbu_league.models.Character;
-import com.example.ssbu_league.services.AppUserService;
+import com.example.ssbu_league.service.AppUserService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;

@@ -1,39 +1,19 @@
-// src/components/Dashboard.jsx
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import Scoreboard from './Scoreboard.jsx';
-import { useAuth } from './AuthContext.jsx';
-import './Dashboard.css';
+import ProtectedLayout from '../layouts/ProtectedLayout';
+import AddFight from './AddFight';
+import FightTable from './FightTable';
+import Scoreboard from './Scoreboard';
 
 const Dashboard = () => {
-    const { userRole, username, isLoading } = useAuth();
-    const navigate = useNavigate();
-
-    return (
-        <div className="dashboard-container">
-            <h3 className='welcome-message'>Welcome, {username}</h3>
-            <div className="dashboard-navigation">
-                <button
-                    onClick={() => navigate('/user/profile')}
-                    className="user-panel-button"
-                >
-                    Profile Settings
-                </button>
-                {userRole === 'ADMIN' && (
-                    <button
-                        onClick={() => navigate('/admin/panel')}
-                        className="admin-panel-button"
-                    >
-                        Admin
-                    </button>
-                )}
-            </div>
-
-            <main className="dashboard-content">
-                <Scoreboard />
-            </main>
-        </div>
-    );
+  return (
+    <ProtectedLayout>
+      <div className="container mx-auto px-4 space-y-6 max-w-full overflow-x-hidden">
+        <AddFight />
+        <Scoreboard />
+        <FightTable />
+      </div>
+    </ProtectedLayout>
+  );
 };
 
 export default Dashboard;

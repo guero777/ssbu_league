@@ -46,12 +46,11 @@ const Login = () => {
     };
 
 return (
-    <div className="fixed inset-0 overflow-y-auto">
-      <div className="min-h-screen flex items-center justify-center bg-contain bg-center bg-no-repeat bg-black/90 backdrop-blur-sm" 
-           style={{backgroundImage: "url('/images/logo-calm.jpg')"}}>
-        <div className="w-full max-w-md p-8 pb-12 mx-4 my-8 bg-black/60 backdrop-blur-sm rounded-xl border border-blue-400/30 shadow-[0_0_30px_rgba(37,99,235,0.15)]">
+    <div className="fixed inset-0 overflow-y-auto bg-black">
+      <div className="min-h-screen flex items-center justify-center bg-contain bg-center bg-no-repeat bg-black/90 backdrop-blur-sm" style={{backgroundImage: "url('/images/logoMinimalRed.jpg')"}}>
+        <div className="w-full max-w-md p-8 pb-12 mx-4 my-8 bg-black/60 backdrop-blur-sm rounded-xl border border-red-900/50 shadow-[0_0_30px_rgba(185,28,28,0.15)]">
 
-        <h2 className="text-3xl font-bold mb-8 text-center text-blue-50">Login to SSBU League</h2>
+        <h2 className="text-3xl font-bold mb-8 text-center text-red-50">Login to SSBU League</h2>
         
         <form onSubmit={handleSubmit} className="space-y-8 mb">
           <FormInput
@@ -61,7 +60,7 @@ return (
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             placeholder="Enter your username"
-            color="blue"
+            color="red"
           />
           
           <FormInput
@@ -71,7 +70,7 @@ return (
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Enter your password"
-            color="blue"
+            color="red"
           />
 
           {error && (
@@ -81,7 +80,7 @@ return (
           )}
           
           <div className="mt-8 flex justify-center">
-            <SubmitButton color="blue">
+            <SubmitButton color="red">
               Sign in
             </SubmitButton>
           </div>

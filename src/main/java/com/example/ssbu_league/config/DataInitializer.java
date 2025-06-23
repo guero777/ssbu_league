@@ -1,7 +1,8 @@
 package com.example.ssbu_league.config;
 
 import com.example.ssbu_league.models.AppUser;
-import com.example.ssbu_league.repositories.AppUserRepository;
+import com.example.ssbu_league.repository.AppUserRepository;
+
 import io.github.cdimascio.dotenv.Dotenv;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,10 +1,11 @@
-package com.example.ssbu_league.services;
+package com.example.ssbu_league.service;
 
 import com.example.ssbu_league.config.AppUserPrincipal;
 import com.example.ssbu_league.dto.UserEditDTO;
 import com.example.ssbu_league.models.AppUser;
 import com.example.ssbu_league.models.Character;
-import com.example.ssbu_league.repositories.AppUserRepository;
+import com.example.ssbu_league.repository.AppUserRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -29,6 +30,12 @@ public class AppUserService implements UserDetailsService {
 
     public AppUserService(AppUserRepository appUserRepository) {
         this.appUserRepository = appUserRepository;
+    }
+
+    public List<String> getAllUsernames() {
+        return appUserRepository.findAll().stream()
+                .map(AppUser::getUsername)
+                .collect(Collectors.toList());
     }
 
     // UserDetailService implementation requires returning a Principal for login and session purpose
