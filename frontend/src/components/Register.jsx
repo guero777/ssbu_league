@@ -55,10 +55,10 @@ const Register = () => {
     }
 
     return (
-      <div className="h-screen w-screen flex items-center justify-center bg-repeat-x bg-center bg-contain bg-black backdrop-blur-sm bg-[url('/images/logoMinimalRed.jpg')]">
-        <div className="w-full max-w-md p-8 pb-12 mx-4 my-8 bg-black/60 backdrop-blur-sm rounded-xl border border-red-900/50 shadow-[0_0_30px_rgba(185,28,28,0.15)]">
+      <div className="h-screen w-screen flex items-center justify-center bg-repeat-x bg-center bg-contain bg-black backdrop-blur-sm bg-[url('/images/logoBurning.gif')]">
+        <div className="w-full max-w-md p-10 pb-12 mx-4 my-8 bg-black/70 backdrop-blur-sm rounded-xl border border-red-900/50 shadow-[0_0_30px_rgba(185,28,28,0.15)]">
 
-        <h2 className="text-2xl font-bold mb-6 text-center text-red-50">Join SSBU League</h2>
+        <h2 className="text-4xl font-bold mb-6 text-center text-red-50">Join SSBU League</h2>
         
         <form onSubmit={handleSubmit} className="space-y-6">
           <FormInput
@@ -68,7 +68,6 @@ const Register = () => {
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             placeholder="Choose your username"
-            required
             color="red"
           />
           
@@ -79,7 +78,6 @@ const Register = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Create your password"
-            required
             color="red"
           />
 
@@ -90,17 +88,16 @@ const Register = () => {
             value={repeatPassword}
             onChange={(e) => setRepeatPassword(e.target.value)}
             placeholder="Repeat your password"
-            required
             color="red"
           />
 
           {error && (
-            <div className="text-red-500 text-sm text-center mb-4">
+            <div className="text-red-500 text-lg text-center mb-4">
               {error}
             </div>
           )}
           
-          <div className="mt-8 flex justify-center">
+          <div className="flex justify-center mt-12">
             <SubmitButton color="red">
               Create Account
             </SubmitButton>

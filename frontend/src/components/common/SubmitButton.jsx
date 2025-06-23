@@ -34,14 +34,11 @@ const SubmitButton = ({
       className={`
         relative
         w-full
-        sm:w-[280px]
         mx-auto
         px-10
         py-5
-        text-xl
-        sm:text-lg
-        sm:px-8
-        sm:py-4
+        mt-8
+        text-2xl
         font-bold
         tracking-wide
         border

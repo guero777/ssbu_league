@@ -47,7 +47,7 @@ const Login = () => {
 
 return (
     <div className="fixed inset-0 overflow-y-auto">
-      <div className="min-h-screen flex items-center justify-center bg-cover bg-center bg-no-repeat bg-black/90 backdrop-blur-sm" 
+      <div className="min-h-screen flex items-center justify-center bg-contain bg-center bg-no-repeat bg-black/90 backdrop-blur-sm" 
            style={{backgroundImage: "url('/images/logo-calm.jpg')"}}>
         <div className="w-full max-w-md p-8 pb-12 mx-4 my-8 bg-black/60 backdrop-blur-sm rounded-xl border border-blue-400/30 shadow-[0_0_30px_rgba(37,99,235,0.15)]">
 

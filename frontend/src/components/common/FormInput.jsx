@@ -34,7 +34,7 @@ const FormInput = ({
       {label && (
         <label 
           htmlFor={name}
-          className={`block mb-2 text-lg font-medium ${classes.label}`}
+          className={`block mb-2 text-2xl font-medium ${classes.label}`}
         >
           {label}
           {required && <span className="text-red-500 ml-1">*</span>}
@@ -47,16 +47,11 @@ const FormInput = ({
         value={value}
         onChange={onChange}
         placeholder={placeholder}
-        required={required}
         className={`
           w-full
           px-6
           py-6
-          text-lg
-          sm:text-xl
-          lg:text-lg
-          sm:px-4
-          sm:py-3
+          text-2xl
           border
           rounded
           outline-none

@@ -3,7 +3,7 @@ import React from 'react';
 const AuthButton = ({ children, onClick }) => {
   const buttonClasses = `
 
-  text-xl
+  text-2xl
   font-bold
   tracking-wide
   rounded
