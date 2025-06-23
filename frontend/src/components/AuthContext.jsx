@@ -33,8 +33,13 @@ export const AuthProvider = ({ children }) => {
         return () => window.removeEventListener('focus', onFocus);
     }, []);
 
+    const logout = () => {
+        setUserRole(null);
+        setUsername(null);
+    };
+
     return (
-        <AuthContext.Provider value={{ userRole, username, isLoading, refreshAuthInfo }}>
+        <AuthContext.Provider value={{ userRole, username, isLoading, refreshAuthInfo, logout }}>
             {children}
         </AuthContext.Provider>
     );
