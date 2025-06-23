@@ -55,8 +55,7 @@ const Register = () => {
     }
 
     return (
-    <div className="fixed inset-0 overflow-y-auto">
-      <div className="min-h-screen flex items-center justify-center bg-repeat-x bg-center bg-black/90 backdrop-blur-sm bg-[url('/images/logoMinimalRed.jpg')]">
+      <div className="h-screen w-screen flex items-center justify-center bg-repeat-x bg-center bg-contain bg-black backdrop-blur-sm bg-[url('/images/logoMinimalRed.jpg')]">
         <div className="w-full max-w-md p-8 pb-12 mx-4 my-8 bg-black/60 backdrop-blur-sm rounded-xl border border-red-900/50 shadow-[0_0_30px_rgba(185,28,28,0.15)]">
 
         <h2 className="text-2xl font-bold mb-6 text-center text-red-50">Join SSBU League</h2>
@@ -109,7 +108,6 @@ const Register = () => {
         </form>
         </div>
       </div>
-    </div>
     );
 
 };

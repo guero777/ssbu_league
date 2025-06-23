@@ -34,13 +34,13 @@ const Scoreboard = () => {
 
   return (
     <div className="w-full overflow-x-auto">
-      <table className="w-full border-collapse backdrop-blur-sm">
+      <table className="w-full border-collapse">
         <thead>
           <tr className="border-b border-white/10">
-            <th className="px-6 py-4 text-left text-sm font-semibold text-white/90">Rank</th>
-            <th className="px-6 py-4 text-left text-sm font-semibold text-white/90">Gamer Tag</th>
-            <th className="px-6 py-4 text-left text-sm font-semibold text-white/90">Main</th>
-            <th className="px-6 py-4 text-left text-sm font-semibold text-white/90">Score</th>
+            <th className="px-4 py-8 md:py-4 text-center text-3xl md:text-xl font-bold text-white/90">Rank</th>
+            <th className="px-4 py-8 md:py-4 text-center text-3xl md:text-xl font-bold text-white/90">Gamer Tag</th>
+            <th className="px-4 py-8 md:py-4 text-center text-3xl md:text-xl font-bold text-white/90">Main</th>
+            <th className="px-4 py-8 md:py-4 text-center text-3xl md:text-xl font-bold text-white/90">Score</th>
           </tr>
         </thead>
         <tbody className="divide-y divide-white/5">
@@ -50,12 +50,12 @@ const Scoreboard = () => {
                 key={player.gamerTag}
                 className="transition-colors duration-150 hover:bg-white/5"
               >
-                <td className={`px-6 py-4 text-sm ${index === 0 ? 'text-amber-200 bg-amber-500/10' : index === 1 ? 'text-slate-300 bg-slate-400/10' : index === 2 ? 'text-amber-600 bg-amber-800/10' : 'text-white/70'}`}>{index + 1}</td>
-                <td className="px-6 py-4 text-sm text-white/80">{player.gamerTag}</td>
-                <td className="px-6 py-4 text-sm text-white/60">
+                <td className={`px-6 py-6 md:py-4 text-4xl md:text-xl text-center ${index === 0 ? 'text-amber-200 bg-amber-500/10' : index === 1 ? 'text-slate-300 bg-slate-400/10' : index === 2 ? 'text-amber-600 bg-amber-800/10' : 'text-white/70'}`}>{index + 1}</td>
+                <td className="px-6 py-6 md:py-4 text-4xl md:text-xl text-center text-white/60">{player.gamerTag}</td>
+                <td className="px-6 py-6 md:py-4 text-4xl md:text-xl text-center text-white/60">
                   {player.mainCharacters && player.mainCharacters.length > 0 ? player.mainCharacters[0].shortName : '-'}
                 </td>
-                <td className="px-6 py-4 text-sm font-medium text-white/90">{player.score}</td>
+                <td className="px-6 py-6 md:py-4 text-4xl md:text-xl text-center font-bold text-white/90">{player.score}</td>
               </tr>
             )
           ))}

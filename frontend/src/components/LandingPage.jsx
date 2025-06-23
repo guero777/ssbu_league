@@ -7,14 +7,14 @@ const LandingPage = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="w-screen h-screen bg-repeat-x bg-center bg-cover flex-col bg-[url('/images/logoBurning.gif')]
-                    lg:bg-[url('/images/logoMinimalRed.jpg')]">
-      {/* Header - Fixed height */}
-      <header className="border-b border-red-900/50 border-b-[3px] p-6 sm:p-4">
-        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 sm:gap-4">
+    <div className="w-screen h-screen overflow-hidden bg-black flex flex-col">
+      <div className="flex-1 bg-center bg-no-repeat bg-contain bg-[url('/images/logoMinimalRed.jpg')]">
+       {/* Header - Fixed height */}
+      <header className="border-b backdrop-blur-sm border-red-900/50 border-b-[2px] p-6">
+        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6 sm:gap-4">
           {/* Logo/Title */}
-          <div className="text-center sm:text-left">
-            <h1 className="text-2xl sm:text-3xl font-bold text-white bg-gradient-to-r from-blue-400 via-blue-500 to-purple-600 bg-clip-text text-transparent">
+          <div className="text-left justify-start">
+            <h1 className="text-4xl font-bold text-white bg-gradient-to-r from-blue-400 via-blue-500 to-purple-600 bg-clip-text text-transparent">
               SSBU League
             </h1>
           </div>
@@ -29,12 +29,13 @@ const LandingPage = () => {
 
       {/* Main Content - Scrollable */}
       <main className="flex-1 overflow-auto px-4 py-6">
-        <div className="max-w-7xl mx-auto h-full">
+        <div className="max-w-7xl mx-auto">
           <div className="bg-black/60 backdrop-blur-sm rounded-xl shadow-2xl p-6 sm:p-8 lg:p-10 border border-red-900/50 h-full">
             <Scoreboard />
           </div>
         </div>
       </main>
+      </div>
     </div>
   );
 };
