@@ -3,7 +3,8 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from './AuthContext';
 import axios from "axios";
 import { API_BASE_URL } from '../config';
-import './Login.css';
+import FormInput from './common/FormInput';
+import SubmitButton from './common/SubmitButton';
 
 
 const Login = () => {
@@ -45,36 +46,49 @@ const Login = () => {
     };
 
 return (
-    <>
-        <div className="login-container">
-            
-            <form onSubmit={handleSubmit}>
-                <div className={"username-field"}>
-                    <input
-                        type="text"
-                        id={"username"}
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                        placeholder="Enter your username"
-                        required
-                    />
-                </div>
-                <div className={"password-field"}>
-                    <input
-                        type="password"
-                        id={"password"}
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        placeholder="Enter your password"
-                        required
-                    />
-                </div>
-                <button type={"submit"} className={"login-submit-button"}>
-                    Sign in
-                </button>
-            </form>
+    <div className="fixed inset-0 overflow-y-auto">
+      <div className="min-h-screen flex items-center justify-center bg-cover bg-center bg-no-repeat bg-black/90 backdrop-blur-sm" 
+           style={{backgroundImage: "url('/images/logo-calm.jpg')"}}>
+        <div className="w-full max-w-md p-8 pb-12 mx-4 my-8 bg-black/60 backdrop-blur-sm rounded-xl border border-blue-400/30 shadow-[0_0_30px_rgba(37,99,235,0.15)]">
+
+        <h2 className="text-3xl font-bold mb-8 text-center text-blue-50">Login to SSBU League</h2>
+        
+        <form onSubmit={handleSubmit} className="space-y-8 mb">
+          <FormInput
+            label="Username"
+            type="text"
+            name="username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            placeholder="Enter your username"
+            color="blue"
+          />
+          
+          <FormInput
+            label="Password"
+            type="password"
+            name="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Enter your password"
+            color="blue"
+          />
+
+          {error && (
+            <div className="text-red-500 text-sm text-center mb-4">
+              {error}
+            </div>
+          )}
+          
+          <div className="mt-8 flex justify-center">
+            <SubmitButton color="blue">
+              Sign in
+            </SubmitButton>
+          </div>
+        </form>
         </div>
-    </>
+      </div>
+    </div>
 );
 
 };

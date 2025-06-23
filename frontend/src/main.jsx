@@ -3,7 +3,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import '../index.css';
 import {BrowserRouter, Route, Routes} from "react-router-dom";
-import App from "./components/App.jsx";
+import LandingPage from "./components/LandingPage.jsx";
 import Login from "./components/Login.jsx";
 import Register from "./components/Register.jsx";
 import Dashboard from "./components/Dashboard.jsx";
@@ -17,7 +17,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         <BrowserRouter>
             <AuthProvider>
                 <Routes>
-                    <Route path="/" element={<App />} />
+                    <Route path="/" element={<LandingPage />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/register" element={<Register />} />
                     <Route path="/user/profile" element={<PrivateRoute><Profile/></PrivateRoute>} />

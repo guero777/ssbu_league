@@ -2,7 +2,8 @@ import {useState} from "react";
 import axios from "axios";
 import { API_BASE_URL } from '../config';
 import {useNavigate} from "react-router-dom";
-import './Register.css'
+import FormInput from './common/FormInput';
+import SubmitButton from './common/SubmitButton';
 
 const Register = () => {
 
@@ -54,47 +55,61 @@ const Register = () => {
     }
 
     return (
-        <>
-            <div className="register-container">
-                <h2 className={"register-header"}> Wanna fight? </h2>
-                {error && <div className="error-message" style={{color: 'red', marginBottom: '1rem'}}>{error}</div>}
-                <form className = "register-form" onSubmit={handleSubmit}>
-                    <div className={"username-field"}>
-                        <input
-                            type="text"
-                            id={"username"}
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
-                            placeholder="Enter your username"
-                            required
-                        />
-                    </div>
-                    <div className={"password-field"}>
-                        <input
-                            type="password"
-                            id={"password"}
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            placeholder="Enter your password"
-                            required
-                        />
-                    </div>
-                    <div className={"password-field"}>
-                        <input
-                            type="password"
-                            id={"repeat-password"}
-                            value={repeatPassword}
-                            onChange={(e) => setRepeatPassword(e.target.value)}
-                            placeholder="Repeat password"
-                            required
-                        />
-                    </div>
-                    <button type={"submit"} className={"register-button"}>
-                        Register
-                    </button>
-                </form>
+    <div className="fixed inset-0 overflow-y-auto">
+      <div className="min-h-screen flex items-center justify-center bg-repeat-x bg-center bg-black/90 backdrop-blur-sm bg-[url('/images/logoMinimalRed.jpg')]">
+        <div className="w-full max-w-md p-8 pb-12 mx-4 my-8 bg-black/60 backdrop-blur-sm rounded-xl border border-red-900/50 shadow-[0_0_30px_rgba(185,28,28,0.15)]">
+
+        <h2 className="text-2xl font-bold mb-6 text-center text-red-50">Join SSBU League</h2>
+        
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <FormInput
+            label="Username"
+            type="text"
+            name="username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            placeholder="Choose your username"
+            required
+            color="red"
+          />
+          
+          <FormInput
+            label="Password"
+            type="password"
+            name="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Create your password"
+            required
+            color="red"
+          />
+
+          <FormInput
+            label="Confirm Password"
+            type="password"
+            name="repeat-password"
+            value={repeatPassword}
+            onChange={(e) => setRepeatPassword(e.target.value)}
+            placeholder="Repeat your password"
+            required
+            color="red"
+          />
+
+          {error && (
+            <div className="text-red-500 text-sm text-center mb-4">
+              {error}
             </div>
-        </>
+          )}
+          
+          <div className="mt-8 flex justify-center">
+            <SubmitButton color="red">
+              Create Account
+            </SubmitButton>
+          </div>
+        </form>
+        </div>
+      </div>
+    </div>
     );
 
 };
