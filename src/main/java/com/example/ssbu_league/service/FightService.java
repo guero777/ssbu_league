@@ -15,11 +15,30 @@ import java.util.List;
 public class FightService {
 
     private final FightRepository fightRepository;
+    private final RatingService ratingService;
 
-    private void validateScores(FightDTO fightDTO) {
+    private void validateFight(AppUser player1, AppUser player2, FightDTO fightDTO) {
+        // Validate players
+        if (player1 == null || player2 == null) {
+            throw new IllegalArgumentException("Both players must exist");
+        }
+        if (player1.equals(player2)) {
+            throw new IllegalArgumentException("Players cannot fight themselves");
+        }
+        if (player1.getGamerTag() == null || player2.getGamerTag() == null) {
+            throw new IllegalArgumentException("Both players must have gamertags");
+        }
+
+        // Validate scores
         int player1Games = fightDTO.getGameCountPlayer1();
         int player2Games = fightDTO.getGameCountPlayer2();
         int maxWins = fightDTO.getMode() == GameMode.BEST_OF_3 ? 2 : 3;
+        int maxGames = fightDTO.getMode() == GameMode.BEST_OF_3 ? 3 : 5;
+        int totalGames = player1Games + player2Games;
+
+        if (player1Games < 0 || player2Games < 0) {
+            throw new IllegalArgumentException("Game counts cannot be negative");
+        }
         
         if (player1Games > maxWins) {
             throw new IllegalArgumentException("Player 1 cannot have more than " + maxWins + " wins in " + fightDTO.getMode());
@@ -28,25 +47,41 @@ public class FightService {
             throw new IllegalArgumentException("Player 2 cannot have more than " + maxWins + " wins in " + fightDTO.getMode());
         }
         
-        int totalGames = player1Games + player2Games;
-        if (totalGames > (fightDTO.getMode() == GameMode.BEST_OF_3 ? 3 : 5)) {
-            throw new IllegalArgumentException("Total games cannot exceed the maximum allowed for " + fightDTO.getMode());
+        if (totalGames > maxGames) {
+            throw new IllegalArgumentException("Total games cannot exceed " + maxGames + " for " + fightDTO.getMode());
+        }
+
+        // Validate at least one player has enough wins for a valid match
+        boolean isValidMatch = player1Games >= maxWins || player2Games >= maxWins;
+        if (totalGames > 0 && !isValidMatch) {
+            throw new IllegalArgumentException("Match is incomplete - no player has reached the required number of wins");
         }
     }
 
     public Fights createFight(AppUser player1, AppUser player2, FightDTO fightDTO) {
-        validateScores(fightDTO);
-        Fights fight = new Fights();
-        fight.setPlayer1(player1);
-        fight.setPlayer2(player2);
-        fight.setMode(fightDTO.getMode());
-        fight.setGameCountPlayer1(fightDTO.getGameCountPlayer1());
-        fight.setGameCountPlayer2(fightDTO.getGameCountPlayer2());
+        validateFight(player1, player2, fightDTO);
         
-        return fightRepository.save(fight);
+        // Create new fight
+        Fights newFight = new Fights();
+        newFight.setPlayer1(player1);
+        newFight.setPlayer2(player2);
+        newFight.setMode(fightDTO.getMode());
+        newFight.setGameCountPlayer1(fightDTO.getGameCountPlayer1());
+        newFight.setGameCountPlayer2(fightDTO.getGameCountPlayer2());
+        
+        // Save fight first
+        fightRepository.save(newFight);
+        
+        // Then update ratings
+        ratingService.updateRatings(newFight);
+        
+        return newFight;
     }
 
-    public List<Fights> findFightsByUsername(String username) {
-        return fightRepository.findByPlayer1UsernameOrPlayer2Username(username, username);
+    public List<Fights> findFightsByGamerTag(String gamerTag) {
+        if (gamerTag == null || gamerTag.trim().isEmpty()) {
+            throw new IllegalArgumentException("Gamertag cannot be empty");
+        }
+        return fightRepository.findByPlayerGamerTag(gamerTag);
     }
 }

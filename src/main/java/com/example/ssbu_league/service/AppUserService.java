@@ -191,6 +191,29 @@ public class AppUserService implements UserDetailsService {
             });
     }
 
+    public AppUser findUserByGamerTag(String gamerTag) {
+        return appUserRepository.findByGamerTag(gamerTag)
+            .orElseThrow(() -> new RuntimeException("User not found with gamerTag: " + gamerTag));
+    }
+
+    public List<String> getAllGamerTagsExcept(String currentGamerTag) {
+        List<AppUser> users;
+        if (currentGamerTag == null || currentGamerTag.isEmpty()) {
+            System.out.println("Current gamertag is null/empty, getting all non-null gamertags");
+            users = appUserRepository.findByGamerTagIsNotNull();
+        } else {
+            System.out.println("Getting all gamertags except: " + currentGamerTag);
+            users = appUserRepository.findByGamerTagNotAndGamerTagIsNotNull(currentGamerTag);
+        }
+        System.out.println("Found users: " + users);
+        
+        List<String> gamertags = users.stream()
+            .map(AppUser::getGamerTag)
+            .collect(Collectors.toList());
+        System.out.println("Extracted gamertags: " + gamertags);
+        return gamertags;
+    }
+
     public void updateUser(AppUser user) {
         appUserRepository.save(user);
     }

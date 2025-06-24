@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../components/AuthContext';
 import AuthButton from '../components/common/AuthButton';
+import { API_BASE_URL } from '../config';
 
 const ProtectedLayout = ({ children }) => {
   const { userRole, username, logout } = useAuth();
@@ -9,7 +10,7 @@ const ProtectedLayout = ({ children }) => {
 
   const handleLogout = async () => {
     try {
-      const response = await fetch('/api/auth/logout', {
+      const response = await fetch(`${API_BASE_URL}/api/logout`, {
         method: 'POST',
         credentials: 'include'
       });

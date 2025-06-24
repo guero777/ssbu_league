@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from './AuthContext';
-import FormInput from './common/FormInput';
 import SubmitButton from './common/SubmitButton';
+import { API_BASE_URL } from '../config';
 
 const AddFight = () => {
   const [opponents, setOpponents] = useState([]);
@@ -11,25 +11,55 @@ const AddFight = () => {
   const [player2Score, setPlayer2Score] = useState(0);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [currentGamerTag, setCurrentGamerTag] = useState('');
   const { username } = useAuth();
 
   useEffect(() => {
+    fetchCurrentGamerTag();
     fetchOpponents();
   }, []);
 
+  const fetchCurrentGamerTag = () => {
+    fetch(`${API_BASE_URL}/api/user/current-gamertag`, {
+      credentials: 'include',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      }
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Server error');
+        }
+        return response.text();
+      })
+      .then(data => setCurrentGamerTag(data))
+      .catch(error => {
+        console.error('Error:', error);
+        setError('Failed to load gamertag');
+      });
+  };
+
   const fetchOpponents = async () => {
     try {
-      const response = await fetch('/api/fights/users', {
-        credentials: 'include'
+      const response = await fetch(`${API_BASE_URL}/api/user/all-gamertags`, {
+        credentials: 'include',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        }
       });
       if (response.ok) {
-        const users = await response.json();
-        // Filter out the current user
-        setOpponents(users.filter(user => user !== username));
+        const gamertags = await response.json();
+        setOpponents(gamertags);
+      } else {
+        const errorText = await response.text();
+        console.error('Server error:', errorText);
+        setError('Failed to load opponents: ' + errorText);
       }
     } catch (error) {
       console.error('Error fetching opponents:', error);
-      setError('Failed to load opponents');
+      setError('Failed to load opponents: ' + (error.message || 'Unknown error'));
     }
   };
 
@@ -45,14 +75,15 @@ const AddFight = () => {
     }
 
     try {
-      const response = await fetch('/api/fights', {
+      const response = await fetch(`${API_BASE_URL}/api/fights`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         credentials: 'include',
         body: JSON.stringify({
-          player2Username: selectedOpponent,
+          player1GamerTag: currentGamerTag,
+          player2GamerTag: selectedOpponent,
           mode: gameMode,
           gameCountPlayer1: parseInt(player1Score),
           gameCountPlayer2: parseInt(player2Score)
@@ -60,18 +91,24 @@ const AddFight = () => {
       });
 
       if (response.ok) {
-        // Reset form
-        setSelectedOpponent('');
-        setGameMode('COMPETITIVE');
+        // Only reset scores, keep opponent and game mode
         setPlayer1Score(0);
         setPlayer2Score(0);
+        // Trigger fights table refresh by emitting an event
+        window.dispatchEvent(new Event('fightSubmitted'));
       } else {
-        const data = await response.json();
-        setError(data.message || 'Failed to submit fight');
+        let errorMessage;
+        try {
+          const data = await response.text();
+          errorMessage = data.startsWith('{') ? JSON.parse(data).message : data;
+        } catch (e) {
+          errorMessage = 'Failed to parse server response';
+        }
+        setError(errorMessage || 'Failed to submit fight');
       }
     } catch (error) {
       console.error('Error submitting fight:', error);
-      setError('Failed to submit fight');
+      setError('Failed to submit fight: ' + (error.message || 'Unknown error'));
     } finally {
       setIsLoading(false);
     }
@@ -89,7 +126,7 @@ const AddFight = () => {
               Player 1
             </label>
             <div className="text-2xl text-center text-white/60 px-6 py-4 bg-white/5 rounded">
-              {username}
+              {currentGamerTag || 'Loading...'}
             </div>
           </div>
 
@@ -139,17 +176,22 @@ const AddFight = () => {
               onChange={(e) => {
                 const newScore = parseInt(e.target.value);
                 setPlayer1Score(newScore);
-                // Reset player 2 score if total would exceed max
-                const maxScore = gameMode === 'BEST_OF_3' ? 2 : 3;
-                if (newScore + parseInt(player2Score) > maxScore) {
-                  setPlayer2Score(0);
-                }
               }}
               className="w-full px-6 py-4 text-2xl bg-white/5 border border-red-900/30 rounded text-white/60 focus:border-red-500/50 focus:outline-none"
             >
-              {Array.from({length: (gameMode === 'BEST_OF_3' ? 2 : 3) + 1}, (_, i) => (
-                <option key={i} value={i}>{i}</option>
-              ))}
+              {(() => {
+                const maxWinsPerPlayer = gameMode === 'BEST_OF_3' ? 2 : 3;
+                const maxTotalGames = gameMode === 'BEST_OF_3' ? 3 : 5;
+                const remainingGames = maxTotalGames - player2Score;
+                const maxAllowedWins = Math.min(maxWinsPerPlayer, remainingGames);
+                const options = [];
+                for (let i = 0; i <= maxAllowedWins && i + player2Score <= maxTotalGames; i++) {
+                  options.push(
+                    <option key={i} value={i}>{i}</option>
+                  );
+                }
+                return options;
+              })()}
             </select>
           </div>
           <div>
@@ -158,12 +200,25 @@ const AddFight = () => {
             </label>
             <select
               value={player2Score}
-              onChange={(e) => setPlayer2Score(e.target.value)}
+              onChange={(e) => {
+                const newScore = parseInt(e.target.value);
+                setPlayer2Score(newScore);
+              }}
               className="w-full px-6 py-4 text-2xl bg-white/5 border border-red-900/30 rounded text-white/60 focus:border-red-500/50 focus:outline-none"
             >
-              {Array.from({length: (gameMode === 'BEST_OF_3' ? 2 : 3) - parseInt(player1Score) + 1}, (_, i) => (
-                <option key={i} value={i}>{i}</option>
-              ))}
+              {(() => {
+                const maxWinsPerPlayer = gameMode === 'BEST_OF_3' ? 2 : 3;
+                const maxTotalGames = gameMode === 'BEST_OF_3' ? 3 : 5;
+                const remainingGames = maxTotalGames - player1Score;
+                const maxAllowedWins = Math.min(maxWinsPerPlayer, remainingGames);
+                const options = [];
+                for (let i = 0; i <= maxAllowedWins && i + player1Score <= maxTotalGames; i++) {
+                  options.push(
+                    <option key={i} value={i}>{i}</option>
+                  );
+                }
+                return options;
+              })()}
             </select>
           </div>
         </div>
