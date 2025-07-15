@@ -6,12 +6,12 @@ const getApiBaseUrl = () => {
     }
     
     // For production environment
-    if (window.location.hostname === '173.212.222.16') {
-        return 'http://173.212.222.16:8080';
+    if (window.location.hostname === 'ssbu.org') {
+        return 'https://ssbu.org';
     }
     
-    // Default fallback
-    return 'http://' + window.location.hostname + ':8080';
+    // Default fallback - use HTTPS if not localhost
+    return window.location.protocol + '//' + window.location.hostname;
 };
 
 export const API_BASE_URL = getApiBaseUrl();
