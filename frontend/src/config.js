@@ -9,6 +9,11 @@ const getApiBaseUrl = () => {
     if (window.location.hostname === '173.212.222.16') {
         return 'http://173.212.222.16:8080';
     }
+
+    // For production environment
+    if (window.location.hostname === 'ssbu.org') {
+        return 'https://ssbu.org';
+    }
     
     // Default fallback
     return 'http://' + window.location.hostname + ':8080';
