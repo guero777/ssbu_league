@@ -46,7 +46,8 @@ public class SecurityConfig {
             "http://173.212.222.16:8080", // VPS HTTP with port
             "https://173.212.222.16",     // VPS HTTPS
             "https://173.212.222.16:8080", // VPS HTTPS with port
-            "https://ssbu.org"           // Production domain
+            "https://ssbu.org",          // Production domain
+            "https://www.ssbu.org"       // Production www subdomain
         ));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("Content-Type", "Authorization", "X-Requested-With", "X-XSRF-TOKEN"));

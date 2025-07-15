@@ -5,13 +5,13 @@ const getApiBaseUrl = () => {
         return 'http://localhost:8080';
     }
     
-    // For production environment
+    // For production environment with IP
     if (window.location.hostname === '173.212.222.16') {
         return 'http://173.212.222.16:8080';
     }
 
-    // For production environment
-    if (window.location.hostname === 'ssbu.org') {
+    // For production environment (handle both www and non-www)
+    if (window.location.hostname === 'ssbu.org' || window.location.hostname === 'www.ssbu.org') {
         return 'https://ssbu.org';
     }
     
