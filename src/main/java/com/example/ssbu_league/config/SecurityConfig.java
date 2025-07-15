@@ -42,8 +42,10 @@ public class SecurityConfig {
         configuration.setAllowedOrigins(Arrays.asList(
             "http://localhost:5173",     // Dev frontend
             "http://localhost:8080",      // Dev backend
-            "https://ssbu.org",          // Production domain
-            "https://www.ssbu.org"       // Production www subdomain
+            "http://173.212.222.16",     // VPS HTTP
+            "http://173.212.222.16:8080", // VPS HTTP with port
+            "https://173.212.222.16",     // VPS HTTPS
+            "https://173.212.222.16:8080" // VPS HTTPS with port
         ));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("Content-Type", "Authorization", "X-Requested-With", "X-XSRF-TOKEN"));
@@ -59,9 +61,6 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .requiresChannel(channel -> channel
-                .requestMatchers(r -> r.getHeader("X-Forwarded-Proto") != null).requiresSecure()
-                .anyRequest().requiresSecure())
             .csrf(csrf -> csrf.disable())
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
             .authorizeHttpRequests(auth -> auth
@@ -91,8 +90,7 @@ public class SecurityConfig {
                 .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
                 .sessionFixation().migrateSession()
                 .maximumSessions(1)
-                .expiredUrl("/login?expired")
-                .maxSessionsPreventsLogin(false)
+                .maxSessionsPreventsLogin(true)
             )
             .logout(logout -> logout
                 .logoutUrl("/api/logout")

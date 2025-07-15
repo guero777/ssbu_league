@@ -30,7 +30,7 @@ services:
       SPRING_DATASOURCE_USERNAME: ${POSTGRES_PROD_USER}
       SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PROD_PASSWORD}
     ports:
-      - '127.0.0.1:8080:8080' # <== restricts access to localhost
+      - '8080:8080'
     depends_on:
       postgres-prod:
         condition: service_healthy
