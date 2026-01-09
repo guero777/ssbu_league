@@ -10,21 +10,27 @@
 	</parent>
 	<groupId>com.example</groupId>
 	<artifactId>ssbu_league</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<name>ssbu_league</name>
 	<description>League for Papenburg Smash</description>
-	<url/>
+	<url>https://github.com/guero777/ssbu_league</url>
 	<licenses>
-		<license/>
+		<license>
+			<name>MIT License</name>
+			<url>https://opensource.org/licenses/MIT</url>
+		</license>
 	</licenses>
 	<developers>
-		<developer/>
+		<developer>
+			<id>guero777</id>
+			<name>Johnny</name>
+			<url>https://github.com/guero777</url>
+		</developer>
 	</developers>
 	<scm>
-		<connection/>
-		<developerConnection/>
-		<tag/>
-		<url/>
+		<connection>scm:git:git://github.com/guero777/ssbu_league.git</connection>
+		<developerConnection>scm:git:ssh://github.com:guero777/ssbu_league.git</developerConnection>
+		<url>https://github.com/guero777/ssbu_league</url>
 	</scm>
 	<properties>
 		<java.version>17</java.version>

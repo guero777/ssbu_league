@@ -47,3 +47,16 @@ build/
 ### Environment Variables ###
 .env
 
+### Docker Compose (contains secrets) ###
+docker-compose.yml
+compose.yaml
+
+### OS Generated ###
+.DS_Store
+.DS_Store?
+._*
+Thumbs.db
+
+### Logs ###
+*.log
+logs/
