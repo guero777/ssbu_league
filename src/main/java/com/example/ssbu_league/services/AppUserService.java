@@ -1,6 +1,6 @@
 package com.example.ssbu_league.services;
 
-import com.example.ssbu_league.configurations.AppUserPrincipal;
+import com.example.ssbu_league.config.AppUserPrincipal;
 import com.example.ssbu_league.models.AppUser;
 import com.example.ssbu_league.repositories.AppUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
