@@ -1,19 +1,20 @@
-// src/main.jsx
-import React from 'react';
-import ReactDOM from 'react-dom/client';
+import { StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import '../index.css';
-import {BrowserRouter, Route, Routes} from "react-router-dom";
-import LandingPage from "./components/LandingPage.jsx";
-import Login from "./components/Login.jsx";
-import Register from "./components/Register.jsx";
-import Dashboard from "./components/Dashboard.jsx";
-import Profile from "./components/Profile/Profile.jsx";
-import AdminPanel from "./components/Admin/AdminPanel.jsx";
-import { AuthProvider } from './components/AuthContext.jsx';
+
+import { AuthProvider } from './context/AuthContext';
 import PrivateRoute from './components/PrivateRoute';
 
-ReactDOM.createRoot(document.getElementById('root')).render(
-    <React.StrictMode>
+import LandingPage from './components/LandingPage';
+import Login from './components/Login';
+import Register from './components/Register';
+import Dashboard from './components/Dashboard';
+import Profile from './components/Profile/Profile';
+import AdminPanel from './components/Admin/AdminPanel';
+
+createRoot(document.getElementById('root')).render(
+    <StrictMode>
         <BrowserRouter>
             <AuthProvider>
                 <Routes>
@@ -26,5 +27,5 @@ ReactDOM.createRoot(document.getElementById('root')).render(
                 </Routes>
             </AuthProvider>
         </BrowserRouter>
-    </React.StrictMode>
+    </StrictMode>
 );

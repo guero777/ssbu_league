@@ -6,11 +6,8 @@ import com.example.ssbu_league.dto.UserScoreDTO;
 import com.example.ssbu_league.dto.UserDTO;
 import com.example.ssbu_league.dto.UserEditDTO;
 import com.example.ssbu_league.models.Character;
-import com.example.ssbu_league.models.AppUser;
 import com.example.ssbu_league.service.AppUserService;
-import com.example.ssbu_league.repository.AppUserRepository;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -31,11 +28,11 @@ import java.util.stream.Collectors;
     allowCredentials = "true") // Allow both local and VPS
 public class UserController {
 
-    @Autowired
-    private AppUserService appUserService;
+    private final AppUserService appUserService;
 
-    @Autowired
-    private AppUserRepository appUserRepository;
+    public UserController(AppUserService appUserService) {
+        this.appUserService = appUserService;
+    }
 
     @PutMapping("/admin/edit-user")
     public ResponseEntity<?> editUser(@RequestBody UserEditDTO userEditDTO) {
@@ -164,31 +161,13 @@ public class UserController {
         return ResponseEntity.status(401).body("Not authenticated");
     }
 
-    @GetMapping("/test/all-users")
-    public ResponseEntity<?> getAllUsers() {
-        List<AppUser> allUsers = appUserRepository.findAll();
-        System.out.println("All users in DB: " + allUsers);
-        return ResponseEntity.ok(allUsers.stream()
-            .map(user -> Map.of(
-                "username", user.getUsername(),
-                "gamerTag", user.getGamerTag() != null ? user.getGamerTag() : "null"
-            ))
-            .collect(Collectors.toList()));
-    }
-
     @GetMapping("/user/all-gamertags")
     public ResponseEntity<?> getAllGamerTags() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && authentication.isAuthenticated() && !authentication.getName().equals("anonymousUser")) {
             String username = authentication.getName();
-            System.out.println("Current username: " + username);
-            
             String currentGamerTag = appUserService.getGamerTag(username);
-            System.out.println("Current gamertag: " + currentGamerTag);
-            
             List<String> gamertags = appUserService.getAllGamerTagsExcept(currentGamerTag);
-            System.out.println("Found gamertags: " + gamertags);
-            
             return ResponseEntity.ok(gamertags);
         }
         return ResponseEntity.status(401).body("Not authenticated");

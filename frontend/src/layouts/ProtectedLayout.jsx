@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../components/AuthContext';
+import { useAuth } from '../context/AuthContext';
 import AuthButton from '../components/common/AuthButton';
 import { API_BASE_URL } from '../config';
 

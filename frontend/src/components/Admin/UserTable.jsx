@@ -1,8 +1,7 @@
-// src/components/UserTable.jsx
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { API_BASE_URL } from '../../config.js';
-import UserEdit from './UserEdit.jsx';
+import { API_BASE_URL } from '../../config';
+import UserEdit from './UserEdit';
 
 const UserTable = () => {
     const [users, setUsers] = useState([]);
@@ -24,9 +23,8 @@ const UserTable = () => {
             if (response.data) {
                 setUsers(response.data);
             }
-            console.log('Fetched users:', response.data); // Debug log
         } catch (error) {
-            console.error("Error fetching users:", error);
+            console.error('Error fetching users:', error);
         }
     };
 
@@ -44,18 +42,17 @@ const UserTable = () => {
         handleCloseModal();
     };
 
-const handleDelete = async (username) => {
-  try {
-    // note: use axios.delete and put the username into the URL
-    await axios.delete(
-      `${API_BASE_URL}/api/admin/delete-user/${encodeURIComponent(username)}`,
-      { withCredentials: true }
-    );
-    fetchUsers();
-  } catch (error) {
-    console.error("Error deleting user:", error);
-  }
-};
+    const handleDelete = async (username) => {
+        try {
+            await axios.delete(
+                `${API_BASE_URL}/api/admin/delete-user/${encodeURIComponent(username)}`,
+                { withCredentials: true }
+            );
+            fetchUsers();
+        } catch (error) {
+            console.error('Error deleting user:', error);
+        }
+    };
 
     return (
         <div className="w-full overflow-x-auto rounded-lg shadow-md border border-red-900/30">

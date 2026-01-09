@@ -1,4 +1,3 @@
-// src/services/AuthService.js
 import { API_BASE_URL } from '../config';
 
 export const authService = {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useAuth } from '../AuthContext';
+import { useAuth } from '../../context/AuthContext';
 import EditUsername from './EditUsername';
 import EditGamerTag from './EditGamerTag';
 import MainCharacters from './MainCharacters';
